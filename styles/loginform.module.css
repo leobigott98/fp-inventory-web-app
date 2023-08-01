@@ -1,0 +1,90 @@
+.formcontainer{
+    width: 40vw;
+    height: 100%;
+    background: linear-gradient(180deg, #06F0FF 0%, #05AFBA 57.58%, #05949D 103.33%);
+    /* background-color: #13a8b3; */
+    padding: 1vw;
+    border-radius: 20px;
+    margin: auto;
+    margin-top: 5vh;
+}
+
+.formtitle{
+    margin-left: 1.5vw;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: lighter;
+    font-size: 1vw;
+    color:rgb(40, 39, 39);
+    /* color: white; */
+}
+.form{
+    margin: 3vh;
+}
+
+.label{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: lighter;
+    font-size: 1.5vw;
+    color:rgb(40, 39, 39);
+}
+
+.input{
+    padding: 0.5vh 1vw;
+    width: 100%;
+    border-radius: 10px;
+    height: 5vh;
+    border: 0;
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+    box-shadow: 1px 1px 5px gray;
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.input:hover{
+    box-shadow: 2px 2px 10px gray;
+}
+
+.answerContainer{
+    margin-top: 2vh;
+
+}
+
+.submitContainer{
+    margin-top: 2vh;
+    text-align: center;
+    height: 5vh;
+}
+
+.submit{
+    border: 0;
+    border-radius: 10px;
+    width: 50%;
+    height: 100%;
+    box-shadow: 1px 1px 5px gray;
+    background-color: rgb(46, 199, 46);
+    color: white;
+    font-weight: bold;
+    font-size: 1vw;
+}
+
+.submit:hover{
+    box-shadow: 3px 3px 10px gray;
+    text-shadow: 1px 1px 5px gray;;
+}
+
+.options{
+}
+
+.register{
+    text-align: center;
+}
+
+.text a:hover{
+    /* font-weight: bold; */
+    color: white;
+}
+
+.forgotten{
+    text-align: center;
+}

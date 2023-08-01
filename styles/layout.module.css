@@ -1,0 +1,33 @@
+.navbarContainer {
+  background-color: #13a8b3;
+  display: flex;
+  height: 10vh;
+  align-items: center;
+  width: 100%;
+  box-shadow: 1px 1px 5px gray;
+  font-size: 1.2vw;
+}
+
+.navbar{
+  color:rgb(40, 39, 39);
+  list-style: none;
+  display: flex;
+  text-align: center;  
+  align-items: center;
+  font-weight: normal;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.logo{
+  margin-right: 40vw;
+  align-items: center;
+}
+
+.option{
+  margin-left: 3.5vw;
+}
+
+.option a:hover{
+  color: white;
+  /* text-shadow: 1px 1px 5px blue; */
+}
