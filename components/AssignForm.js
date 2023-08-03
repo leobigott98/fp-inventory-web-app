@@ -55,8 +55,6 @@ export default function TransitionsModal(props) {
 
   const [comanderaInfo, setComanderaInfo] = React.useState(['','']);
 
-  const SN = props.sn;
-
   const handleReasonChange = (event) => {
     setReason(event.target.value);
   };
@@ -87,7 +85,11 @@ export default function TransitionsModal(props) {
     React.useEffect(() => {
       async function fetchData() {
         setData(await getLocations());
-        if(SN){
+        var SN = '';
+        if(props.sn){
+          SN = props.sn
+        }
+        if(SN != ''){
           setComanderaInfo(await getComanderaInfo(SN));
         }
       }

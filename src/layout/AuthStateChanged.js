@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import AuthService from "../service/AuthService"
-import useAuth from '../hook/auth';
+import UseAuth from '../hook/auth';
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
 export default function AuthStateChanged({children}){
-    const {setUser} = useAuth()
+    const {setUser} = UseAuth()
     const [loading,setLoading] = useState(true)
 
     useEffect(()=>{

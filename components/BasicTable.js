@@ -26,7 +26,23 @@ export default function BasicTable(props) {
 
   const [rows, setRows] = useState(null);
   //const [productName, setProductName] = useState(null);
-  var categoryName = null;
+  var products = false;
+  var comanderas = false;
+  var assignments = false;
+  var item = false;
+  var itemHistory = false;
+
+  if(props.products){
+    products = true;
+  } else if(props.comanderas){
+    comanderas = true;
+  } else if(props.assignments){
+    assignments = true;
+  } else if(props.item){
+    item = true;
+  } else if(props.itemHistory){
+    itemHistory = true;
+  }
 
     useEffect(() => {  
       async function fetchData(){

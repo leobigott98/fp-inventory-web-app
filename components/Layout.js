@@ -1,5 +1,4 @@
 import styles from '../styles/layout.module.css';
-import Navbar from './Navbar';
 import AppBar from './AppBar';
 // import * as React from 'react';
 import Box from '@mui/material/Box';
