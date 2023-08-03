@@ -35,7 +35,7 @@ export default function TransitionsModal(props) {
   const handleClose = () => setOpen(false);
   const filter = createFilterOptions();
 
-  var SN = false;
+  var SN = '';
 
   const theme = createTheme();
 
@@ -71,7 +71,7 @@ export default function TransitionsModal(props) {
   }
 
   if(props.sn){
-    SN = true
+    SN = props.sn
   }
 
   React.useEffect(() => {
@@ -91,12 +91,12 @@ export default function TransitionsModal(props) {
     React.useEffect(() => {
       async function fetchData() {
         setData(await getLocations());
-        if(SN){
+        if(SN != ''){
           setComanderaInfo(await getComanderaInfo(SN));
         }
       }
       fetchData();
-    }, []);
+    }, [SN]);
 
     const disponibleOptions = ["Vincular", "Averiada"]
 

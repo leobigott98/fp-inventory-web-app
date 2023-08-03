@@ -59,7 +59,7 @@ export default function BasicTable(props) {
         }
       }
       fetchData();
-    }, []);
+    }, [products, comanderas, assignments, item, itemHistory]);
 
   return (
     <TableContainer component={Paper}>
