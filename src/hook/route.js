@@ -1,5 +1,5 @@
 import React from "react";
-import useAuth from "./auth";
+import UseAuth from "./auth";
 import { useRouter } from "next/router";
 import AuthService from "../service/AuthService";
 import Backdrop from "@mui/material/Backdrop";
@@ -7,7 +7,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 export function withPublic(Component) {
   return function WithPublic(props) {
-    const auth = useAuth();
+    const auth = UseAuth();
     const router = useRouter();
     const invalid = AuthService.invalid;
 
@@ -50,7 +50,7 @@ export function withPublic(Component) {
 
 export function withProtected(Component) {
   return function WithProtected(props) {
-    const auth = useAuth();
+    const auth = UseAuth();
     const router = useRouter();
 
     if (!auth.user) {
@@ -92,7 +92,7 @@ export function withProtected(Component) {
 
 export function notVerified(Component) {
   return function notVerified(props) {
-    const auth = useAuth();
+    const auth = UseAuth();
     const router = useRouter();
 
     if (!auth.user) {
