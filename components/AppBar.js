@@ -16,6 +16,7 @@ import AuthService from "../src/service/AuthService";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { getUserData } from "../src/service/DBService";
+import Image from "next/image";
 
 const pages = [{name: "Inicio"}, {name: "Comanderas"}];
 const settings = [{name: "Perfil"}, {name: "Cerrar Sesión"}];
@@ -142,7 +143,7 @@ function ResponsiveAppBar() {
             }}
           >
             <Link href="/">
-              <img src="/images/PuntoGo_efecto3D.png" width="180" height="40" />
+              <Image src="/images/PuntoGo_efecto3D.png" width="180" height="40" alt="logo PuntoGo" priority/>
             </Link>
           </Box>
 

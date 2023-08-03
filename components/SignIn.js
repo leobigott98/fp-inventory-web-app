@@ -26,7 +26,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <a color="inherit" href="https://puntogove.com/" target="_blank">
+      <a color="inherit" href="https://puntogove.com/" target="_blank" rel="noreferrer">
         PuntoGo
       </a>{' '}
       {new Date().getFullYear()}

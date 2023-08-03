@@ -33,7 +33,6 @@ export default function TransitionsModal(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   const filter = createFilterOptions();
 
   const theme = createTheme();
@@ -56,12 +55,15 @@ export default function TransitionsModal(props) {
 
   const [comanderaInfo, setComanderaInfo] = React.useState(['','']);
 
+  const SN = props.sn;
+
   const handleReasonChange = (event) => {
     setReason(event.target.value);
   };
 
   const handleChange = (event) => {
     setAction(event.target.value);
+    console.log(action)
   };
 
   function refreshPage(){
@@ -85,25 +87,30 @@ export default function TransitionsModal(props) {
     React.useEffect(() => {
       async function fetchData() {
         setData(await getLocations());
+        if(SN){
+          setComanderaInfo(await getComanderaInfo(SN));
+        }
       }
       fetchData();
     }, []);
 
-    if(props.comandera){
-      React.useEffect(() => {
+    const disponibleOptions = ["Vincular", "Averiada"]
+
+    const asignadaOptions = ["Desvincular"]
+
+    const averiadaOptions = ["Disponible"]
+
+
+      /* React.useEffect(() => {
         async function fetchData() {
-          setComanderaInfo(await getComanderaInfo(props.sn));
+          setComanderaInfo(await getComanderaInfo(SN));
         }
         fetchData();
-      }, []);
-    }
+      }, []); */
     
-
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    {props.comandera? await assignComandera(e, props.sn, function () {refreshPage()}): 
+    {props.comandera? await assignComandera(e, props.sn, comanderaInfo[1], function () {refreshPage()}): 
     props.retirar? await withdraw(e, props.name, props.productName, function () {refreshPage()}):
     props.reponer? await replenish(e, props.name, props.productName, function () {refreshPage()}):
     await assignComandera(e, props.sn, function () {refreshPage()})}
@@ -186,8 +193,23 @@ export default function TransitionsModal(props) {
                     </>: props.comandera? <>
                       <Grid item xs={12}>
                         <FormControl fullWidth required>
-                          <InputLabel>Acción</InputLabel>
-                          <Select
+                          {/* <InputLabel>Acción</InputLabel> */}
+                          <Autocomplete
+                            //disablePortal
+                            id="action"
+                            //name = "action"
+                            //required
+                            isOptionEqualToValue={(option, value) => option.id === value.id}
+                            value={action}
+                            onChange={(event, newValue) =>{
+                              setAction(newValue);
+                            }}
+                            options={comanderaInfo[0] == "Asignada"? asignadaOptions : comanderaInfo[0] == "Disponible"? disponibleOptions : averiadaOptions}
+                            //options = {disponibleOptions}
+                            sx={{ width: "100%" }}
+                            renderInput={(params) => <TextField {...params} label="Acción" />}
+                          /> 
+                          {/* <Select
                             id="action"
                             label="Acción"
                             name="action"
@@ -206,7 +228,7 @@ export default function TransitionsModal(props) {
                             : 
                             <MenuItem value={"Disponible"}>Disponible</MenuItem> 
                             }  
-                          </Select>
+                          </Select> */}
                         </FormControl>
                       </Grid>
                       {action === "Desvincular" ? <>
@@ -239,24 +261,12 @@ export default function TransitionsModal(props) {
                         />
                         </FormControl>
                       </Grid>
-                          </> : action === "Disponible" ?
-                          <>
-                          
-                          <Grid item xs={12}>
-                        <TextField
-                          fullWidth
-                          id="comments"
-                          label="Comentarios"
-                          name="comments"
-                          pattern="[A-z0-9]"
-                          multiline
-                          maxRows={4}
-                          autoComplete="off"
-                        />
-                      </Grid>
-                          </> : <></>
-                      }
-                          {sellers? <>
+                          </> : 
+                          <></>
+                          }
+                          {action == "Disponible" ? <></> : action == "Averiada"? <></> :
+                      <>
+                      {sellers? <>
                             <Grid item xs={12}>
                         <FormControl fullWidth required>
                         <Autocomplete
@@ -269,7 +279,23 @@ export default function TransitionsModal(props) {
                         />
                         </FormControl>
                       </Grid>
-                          </> : <></>}  
+                          </> : <></>}
+                          </>
+                      }    
+                      <Grid item xs={12}>
+                        <TextField
+                          fullWidth
+                          id="comments"
+                          label="Comentarios"
+                          name="comments"
+                          pattern="[A-z0-9]"
+                          multiline
+                          maxRows={4}
+                          autoComplete="off"
+                        />
+                      </Grid>
+                      
+                            
                     </> : props.reponer? <>
                     <Grid item xs={12}>
                     <TextField

@@ -30,7 +30,7 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <a color="inherit" href="https://puntogove.com/" target="_blank">
+      <a color="inherit" href="https://puntogove.com/" target="_blank" rel="noreferrer">
         PuntoGo
       </a>{" "}
       {new Date().getFullYear()}

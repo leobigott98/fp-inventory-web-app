@@ -28,43 +28,22 @@ export default function BasicTable(props) {
   //const [productName, setProductName] = useState(null);
   var categoryName = null;
 
-  async function fetchData() {
-    setRows(await getProducts());
-  }
-
-  if (props.products) {
     useEffect(() => {  
-      fetchData();
-    }, []);
-  } else if (props.comanderas) {
-    useEffect(() => {
-      async function fetchData() {
-        setRows(await getComanderas());
+      async function fetchData(){
+        if (props.products){
+          setRows(await getProducts());
+        }else if(props.comanderas){
+          setRows(await getComanderas());
+        } else if(props.assignments){
+          setRows(await getComanderaHistory(props.sn));
+        } else if(props.item){
+          setRows(await getItems(props.name));
+        } else if (props.itemHistory){
+          setRows(await getItemHistory(props.lastname, props.name));
+        }
       }
       fetchData();
     }, []);
-  } else if (props.assignments) {
-    useEffect(() => {
-      async function fetchData() {
-        setRows(await getComanderaHistory(props.sn));
-      }
-      fetchData();
-    }, []);
-  } else if (props.item) {
-    useEffect(() => {
-      async function fetchData() {
-        setRows(await getItems(props.name));
-      }
-      fetchData();
-    }, []);
-  } else if (props.itemHistory) {
-    useEffect(() => {
-      async function fetchData() {
-        setRows(await getItemHistory(props.lastname, props.name));
-      }
-      fetchData();
-    }, []);
-  }
 
   return (
     <TableContainer component={Paper}>
@@ -91,7 +70,9 @@ export default function BasicTable(props) {
               <>
                 <TableCell>Fecha</TableCell>
                 <TableCell align="right">Acción</TableCell>
-                <TableCell align="right">Comercio o Responsable</TableCell>
+                <TableCell align="right">Motivo</TableCell>
+                <TableCell align="right">Comercio</TableCell>
+                <TableCell align="right">Ejecutivo</TableCell>
                 <TableCell align="right">Observaciones</TableCell>
                 <TableCell align="right">Usuario</TableCell>
               </>
@@ -168,10 +149,12 @@ export default function BasicTable(props) {
                   <TableCell key={row.timestamp} align="left" sx={{ margin: 0, paddingRight: 0 }}>
                     {String(row.timestamp.toDate())}
                   </TableCell>
-                  <TableCell key={row.action} align="right">{row.action}</TableCell>
-                  <TableCell key={row.agent} align="right">{row.agent}</TableCell>
-                  <TableCell key={row.observations} align="right">{row.observations}</TableCell>
-                  <TableCell key={row.user} align="right">{row.user}</TableCell>
+                  <TableCell  align="right">{row.action}</TableCell>
+                  <TableCell  align="right">{row.reason? row.reason : "-"}</TableCell>
+                  <TableCell  align="right">{row.store? row.store : "-"}</TableCell>
+                  <TableCell  align="right">{row.seller? row.seller : "-"}</TableCell>
+                  <TableCell  align="right">{row.comments? row.comments : "-"}</TableCell>
+                  <TableCell  align="right">{row.user}</TableCell>
                 </TableRow>
               </>
             ) : props.itemHistory? (

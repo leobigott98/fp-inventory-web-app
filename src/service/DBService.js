@@ -86,7 +86,7 @@ export const newItem = async (event, name, callback) => {
   callback()
 };
 
-export const assignComandera = async (event, sn, callback) => {
+export const assignComandera = async (event, sn, store, callback) => {
   event.preventDefault();
 
   const data = {
@@ -95,17 +95,17 @@ export const assignComandera = async (event, sn, callback) => {
     timestamp: serverTimestamp(),
     reason: null,
     status: null,
-    comments: null,
+    comments: event.target.comments.value,
     seller: null,
     store: null
   };
 
   if(data.action === "Disponible"){
-    data.status = action
-    data.comments = event.target.comments.value
+    data.status = data.action
   }else if(data.action === "Desvincular"){
     data.reason = event.target.reason.value
     data.seller = event.target.seller.value
+    data.store = store;
     if(data.reason === "Avería"){
       data.status = "Averiada"
     }else{
@@ -115,11 +115,22 @@ export const assignComandera = async (event, sn, callback) => {
     data.status = "Asignada"
     data.store = event.target.store.value
     data.seller = event.target.seller.value
+  }else if(data.action === "Averiada"){
+    data.status = "Averiada"
   }
-  await addDoc(collection(db, "comanderas", sn, "history"), data);
-  await updateDoc(doc(db, "comanderas", sn,), {
-    status: data.status
-  });
+ await addDoc(collection(db, "comanderas", sn, "history"), data);
+  if(data.action === "Desvincular"){
+    await updateDoc(doc(db, "comanderas", sn,), {
+      Estatus: data.status,
+      Tienda: null
+    });
+  } else {
+    await updateDoc(doc(db, "comanderas", sn,), {
+      Estatus: data.status,
+      Tienda: data.store
+    });
+  } 
+  
 
   callback()
 };
@@ -257,10 +268,11 @@ export const getComanderaInfo = async (sn) => {
   const docRef = doc(db, "comanderas", sn)
   const docSnap = await getDoc(docRef);
   const status = docSnap.data().Estatus;
+  const store = docSnap.data().Tienda;
 
   if (docSnap.exists()) {
     console.log(status);
-    return status;
+    return [status, store];
   } else {
     // docSnap.data() will be undefined in this case
     console.log("No such document!");
