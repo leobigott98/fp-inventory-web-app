@@ -42,7 +42,7 @@ export default function BasicTable(props) {
         }
       }
       fetchData();
-    }, [products, comanderas, assignments, item, itemHistory, props.sn, props.name, props.lastname]);
+    }, [props.products, props.comanderas, props.assignments, props.item, props.itemHistory, props.sn, props.name, props.lastname]);
 
   return (
     <TableContainer component={Paper}>
