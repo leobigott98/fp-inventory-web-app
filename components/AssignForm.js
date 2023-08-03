@@ -35,8 +35,6 @@ export default function TransitionsModal(props) {
   const handleClose = () => setOpen(false);
   const filter = createFilterOptions();
 
-  var SN = '';
-
   const theme = createTheme();
 
   const [action, setAction] = React.useState("");
@@ -70,10 +68,6 @@ export default function TransitionsModal(props) {
     window.location.reload(false);
   }
 
-  if(props.sn){
-    SN = props.sn
-  }
-
   React.useEffect(() => {
     async function fetchData() {
       setStores(await getStores());
@@ -91,12 +85,12 @@ export default function TransitionsModal(props) {
     React.useEffect(() => {
       async function fetchData() {
         setData(await getLocations());
-        if(SN != ''){
-          setComanderaInfo(await getComanderaInfo(SN));
+        if(props.sn){
+          setComanderaInfo(await getComanderaInfo(props.sn));
         }
       }
       fetchData();
-    }, [SN]);
+    }, [props.sn]);
 
     const disponibleOptions = ["Vincular", "Averiada"]
 

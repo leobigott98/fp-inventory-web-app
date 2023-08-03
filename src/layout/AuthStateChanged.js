@@ -13,7 +13,7 @@ export default function AuthStateChanged({children}){
             setUser(userCred);
             setLoading(false);
         });
-    },[]);
+    },[setUser]);
         
 
     if(loading){
