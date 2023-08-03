@@ -90,8 +90,8 @@ export function withProtected(Component) {
   };
 }
 
-export function NotVerified(Component) {
-  return function notVerified(props) {
+export function notVerified(Component) {
+  return function NotVerified(props) {
     const auth = UseAuth();
     const router = useRouter();
 
