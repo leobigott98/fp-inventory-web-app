@@ -14,4 +14,4 @@ function pendingVerification() {
   );
 }
 
-export default notVerified(pendingVerification);
+export default NotVerified(pendingVerification);
