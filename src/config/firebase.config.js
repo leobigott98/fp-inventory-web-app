@@ -12,7 +12,7 @@ const firebaseConfig = {
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
   };
 
-export default function initialize(){
+export const initialize = () => {
     if(getApps().length === 0){
         const app = initializeApp(firebaseConfig);
         if(typeof window != "undefined"){
