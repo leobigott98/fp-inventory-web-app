@@ -35,6 +35,8 @@ export default function TransitionsModal(props) {
   const handleClose = () => setOpen(false);
   const filter = createFilterOptions();
 
+  var SN = false;
+
   const theme = createTheme();
 
   const [action, setAction] = React.useState("");
@@ -68,6 +70,10 @@ export default function TransitionsModal(props) {
     window.location.reload(false);
   }
 
+  if(props.sn){
+    SN = true
+  }
+
   React.useEffect(() => {
     async function fetchData() {
       setStores(await getStores());
@@ -85,11 +91,7 @@ export default function TransitionsModal(props) {
     React.useEffect(() => {
       async function fetchData() {
         setData(await getLocations());
-        var SN = '';
-        if(props.sn){
-          SN = props.sn
-        }
-        if(SN != ''){
+        if(SN){
           setComanderaInfo(await getComanderaInfo(SN));
         }
       }

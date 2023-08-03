@@ -46,15 +46,15 @@ export default function BasicTable(props) {
 
     useEffect(() => {  
       async function fetchData(){
-        if (props.products){
+        if (products){
           setRows(await getProducts());
-        }else if(props.comanderas){
+        }else if(comanderas){
           setRows(await getComanderas());
-        } else if(props.assignments){
+        } else if(assignments){
           setRows(await getComanderaHistory(props.sn));
-        } else if(props.item){
+        } else if(item){
           setRows(await getItems(props.name));
-        } else if (props.itemHistory){
+        } else if (itemHistory){
           setRows(await getItemHistory(props.lastname, props.name));
         }
       }
