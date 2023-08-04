@@ -112,7 +112,7 @@ export default function FullScreenDialog() {
               Nueva Comandera
             </Typography>
             <Button autoFocus color="inherit" onClick={handleClose}>
-              save
+              Cancel
             </Button>
           </Toolbar>
         </AppBar>
