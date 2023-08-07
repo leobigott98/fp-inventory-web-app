@@ -174,7 +174,7 @@ export default function BasicTable(props) {
                   <TableCell key={row.user} align="right">{row.user}</TableCell>
                 </TableRow>
               </>
-            ) : (
+            ) : props.item? (
               <>
               <TableRow
                   key={row.name}
@@ -202,7 +202,13 @@ export default function BasicTable(props) {
                   </TableCell>
                 </TableRow>
               </>
-            )
+            ) : rows == null? (
+            <>
+              <TableRow>
+                SIN REGISTRO
+              </TableRow>
+            </>
+            ) : <></>
           )}
         </TableBody>
       </Table>
