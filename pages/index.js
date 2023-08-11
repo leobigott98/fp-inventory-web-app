@@ -15,6 +15,7 @@ function Home() {
       <title>Inventario</title>
       </Head>
     <AddForm product/>
+    <AddForm />
     <BasicTable products/>
     </Layout>
   )

@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  sendPasswordResetEmail
+  sendPasswordResetEmail, 
 } from "firebase/auth";
 import {initialize} from '../config/firebase.config';
 import { doc, setDoc, getFirestore } from "firebase/firestore";
@@ -81,6 +81,21 @@ class AuthService {
 
     
   };
+
+ validateUser = async () => {
+  console.log('got here!')
+  admin.getAuth
+    .updateUser('Gp0yaabOKCf0f5j5k8TbMvSoKwF3',
+    {
+      emailVerified: true
+    })
+    .then((userRecord) =>{
+      console.log('updated', userRecord.toJson());
+    })
+    .catch((error) => {
+      console.log('Error updating user:', error);
+    });
+}
 
   handleSignIn = async (event, errorFunction, successFunction) => {
     event.preventDefault();
