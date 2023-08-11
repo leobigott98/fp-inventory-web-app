@@ -304,7 +304,6 @@ export const getItems = async(name) =>{
     // doc.data() is never undefined for query doc snapshots
     data.push(doc.data());
   });
-  console.log(data)
 
  return data
   

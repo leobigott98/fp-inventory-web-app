@@ -6,7 +6,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
 // import Button from '@mui/material/Button';
 import {
   getProducts,
@@ -19,7 +18,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import AddForm from '../components/AddForm'
 import AssignForm from '../components/AssignForm'
-import { TableSortLabel } from "@mui/material";
 // import CircularProgress from '@mui/material/CircularProgress';
 // import Fade from '@mui/material/Fade';
 
@@ -176,9 +174,9 @@ export default function BasicTable(props) {
                   <TableCell key={row.user} align="right">{row.user}</TableCell>
                 </TableRow>
               </>
-            ) :  (
+            ) : props.item? (
               <>
-            <TableRow
+              <TableRow
                   key={row.name}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   hover
@@ -203,16 +201,15 @@ export default function BasicTable(props) {
                   
                   </TableCell>
                 </TableRow>
-                </>
-            ) 
-          )}{
-            rows == ''?
+              </>
+            ) : rows == null? (
             <>
               <TableRow>
-                <TableCell align="right">NO HAY REGISTROS</TableCell>
+                SIN REGISTRO
               </TableRow>
-            </> : <></>
-          }
+            </>
+            ) : <></>
+          )}
         </TableBody>
       </Table>
     </TableContainer>
