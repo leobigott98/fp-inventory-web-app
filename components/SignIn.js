@@ -75,7 +75,8 @@ export default function SignIn() {
   }
 
   const validateEmail = (input) => {
-    const pattern = /([A-z.]{3,}@tiendapuntogo.com)/;
+    //const pattern = /([A-z.]{3,}@tiendapuntogo.com)/;
+    const pattern = /([A-z.]{3,}@gmail.com)/;
     let valid = pattern.test(input);
     return valid;
   };
