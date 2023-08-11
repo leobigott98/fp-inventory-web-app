@@ -11,9 +11,9 @@ import {
 import {initialize} from '../config/firebase.config';
 import { doc, setDoc, getFirestore } from "firebase/firestore";
 
-if(getApps().length === 0){
+/* if(getApps().length === 0){
   initialize();
-}
+} */
 
 class AuthService {
 
