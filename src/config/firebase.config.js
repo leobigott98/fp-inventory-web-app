@@ -15,12 +15,12 @@ const firebaseConfig = {
 export const initialize = () => {
     if(getApps().length === 0){
         const app = initializeApp(firebaseConfig);
-        /* if(typeof window != "undefined"){
+        if(typeof window != "undefined"){
             if("measurementId" in firebaseConfig){
                 const analytics = getAnalytics(app);
     
             }
-        } */
+        }
 }  
 }
 

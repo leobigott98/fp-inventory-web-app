@@ -16,7 +16,6 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { newProduct, newItem, getLocations, newLocation } from '../src/service/DBService';
 import { useEffect, useState } from "react";
-import AuthService from '../src/service/AuthService'
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import Alert from '@mui/material/Alert';
 
@@ -88,17 +87,10 @@ export default function TransitionsModal(props) {
     handleClose()
   }
 
-  const handle = (e)=>{
-    e.preventDefault
-    console.log('clicked!')
-    AuthService.validateUser(e);
-
-  }
-
   return (
     <div sx={{mt: 0 }}>
-      <Button onClick={handle} sx={{mt: 0 }}>{props.product ? "Agregar Nueva Categoría" : props.name? `Agregar a ${props.name}`: `Validar`}</Button>
-{/*       <Modal
+      <Button onClick={handleOpen} sx={{mt: 0 }}>{props.product ? "Agregar Nueva Categoría" : `Agregar a ${props.name}`}</Button>
+      <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={open}
@@ -114,6 +106,9 @@ export default function TransitionsModal(props) {
           <Typography id="transition-modal-title" variant="h6" component="h2">
               {props.product ? "Nueva Categoría" : `Nuevos ${props.name}`}
             </Typography>            
+            {/* <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            </Typography> */}
             <ThemeProvider theme={theme}>
               <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -128,7 +123,9 @@ export default function TransitionsModal(props) {
                   <Box
                     component="form"
                     noValidate
+                    //FIX THIS!!! CREATE A HANDLESUBMIT FUNCTION!!
                     onSubmit={(e) => handleSubmit(e)}
+                    // onSubmit={ props.product? newProduct : newItem(e,props.name)   }
                     sx={{ mt: 3 }}
                   >
                   {props.item ? 
@@ -187,6 +184,21 @@ export default function TransitionsModal(props) {
                       </Grid>
                       
                       <Grid item xs={12}>
+                        {/* <FormControl fullWidth required>
+                          <InputLabel>Estatus</InputLabel>
+                          <Select
+                            id="status"
+                            label="Estatus"
+                            name="status"
+                            required
+                            value={status}
+                            onChange={handleChange}
+                          >
+                            <MenuItem value={"Disponible"}>Disponible</MenuItem>
+                            <MenuItem value={"Averiada"}>Dañada</MenuItem>
+                            <MenuItem value={"Asignada"}>Asignada</MenuItem>
+                          </Select>
+                        </FormControl> */}
                       </Grid>
                       <Grid item xs={12}>
                       <Autocomplete
@@ -200,15 +212,15 @@ export default function TransitionsModal(props) {
                           }}
                         options={data}
                         getOptionLabel={(option) => {
-
+                          // Value selected with enter, right from the input
                           if (typeof option === "string") {
                             return option;
                           }
-
+                          // Add "xxx" option created dynamically
                           if (option.inputValue) {
                             return option.inputValue;
                           }
-
+                          // Regular option
                           return option.name;
                         }}
                         renderOption={(props, option) => (
@@ -278,7 +290,7 @@ export default function TransitionsModal(props) {
             </ThemeProvider>
           </Box>
         </Fade>
-      </Modal> */}
+      </Modal>
     </div>
   );
 }
