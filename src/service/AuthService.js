@@ -40,7 +40,7 @@ class AuthService {
     const db = getFirestore(getApp);
 
     var actionCodeSettings = {
-      url: 'http://localhost:3000/'
+      url: 'https://app-inventario.puntogove.com/'
     };
 
     createUserWithEmailAndPassword(auth, data.email, data.password).then(() => {
@@ -49,7 +49,7 @@ class AuthService {
         // ...
         setDoc(doc(db, "users", auth.currentUser.uid), {
           department: event.target.department.value,
-          email: event.tarjet.email.value,
+          email: event.target.email.value,
           lastname: event.target.lastName.value,
           name: event.target.firstName.value,
           admin: false,
