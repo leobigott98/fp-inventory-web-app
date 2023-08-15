@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import AddForm from '../components/AddForm'
 import AssignForm from '../components/AssignForm'
 import { TableSortLabel } from "@mui/material";
+import { CSVLink } from "react-csv";
 // import CircularProgress from '@mui/material/CircularProgress';
 // import Fade from '@mui/material/Fade';
 
@@ -46,7 +47,27 @@ export default function BasicTable(props) {
       fetchData();
     }, [props.products, props.comanderas, props.assignments, props.item, props.itemHistory, props.sn, props.name, props.lastname]);
 
+
+    const data = [
+      { firstname: "Ahmed", lastname: "Tomi", email: "ah@smthing.co.com" },
+      { firstname: "Raed", lastname: "Labes", email: "rl@smthing.co.com" },
+      { firstname: "Yezzi", lastname: "Min l3b", email: "ymin@cocococo.com" }
+    ];
+  
+    const headers = [
+      {label: "First Name", key: "firstname"},
+      {label: "Last Name", key: "lastname"},
+      {label: "Email", key: "email"}
+    ]
+  
+    const csvLink ={
+      filename: "testing.csv",
+      headers: headers,
+      data: data
+    }
+
   return (
+    <>
     <TableContainer component={Paper}>
       {/* <Button onClick={getProducts}>CLICK</Button> */}
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -216,5 +237,9 @@ export default function BasicTable(props) {
         </TableBody>
       </Table>
     </TableContainer>
+    {rows?
+      <CSVLink data={rows} filename={'inventario-info.csv'}>DESCARGAR DATOS</CSVLink> : <></>
+    }
+    </>
   );
 }

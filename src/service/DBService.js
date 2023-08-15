@@ -1,6 +1,8 @@
 import { getFirestore, collection, addDoc, serverTimestamp, doc, updateDoc, setDoc, getDocs, getDoc, query, orderBy, increment} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getApp } from "firebase/app";
+import { saveAs } from "file-saver";
+import { Document, Packer, Paragraph, TextRun } from "docx"; 
 
 const db = getFirestore(getApp);
 const auth = getAuth();
@@ -341,3 +343,37 @@ export const updateItem = async(event, category, id) =>{
   });
 
 }
+
+export const newDoc = () =>{
+  // Documents contain sections, you can have multiple sections per document, go here to learn more about sections
+  // This simple example will only contain one section
+  const doc = new Document({
+    sections: [
+        {
+            properties: {},
+            children: [
+                new Paragraph({
+                    children: [
+                        new TextRun("Hello World"),
+                        new TextRun({
+                            text: "Foo Bar",
+                            bold: true,
+                        }),
+                        new TextRun({
+                            text: "\tGithub is the best",
+                            bold: true,
+                        }),
+                    ],
+                }),
+            ],
+        },
+    ],
+  });
+
+  // Used to export the file into a .docx file
+  Packer.toBlob(doc).then((blob) => {
+    saveAs(blob, "My Document.docx");
+  });
+
+  // Done! A file called 'My Document.docx' will be in your file system.
+} 

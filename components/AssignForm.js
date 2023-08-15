@@ -128,7 +128,7 @@ export default function TransitionsModal(props) {
 
   return (
     <div>
-      <Button onClick={handleOpen}>{props.comandera? `Gestionar Comandera ${props.sn}` : props.retirar? `Retirar` : props.reponer? `Reponer`: `Editar`}</Button>
+      <Button onClick={handleOpen} variant="outlined">{props.comandera? `Gestionar Comandera ${props.sn}` : props.retirar? `Retirar` : props.reponer? `Reponer`: `Editar`}</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
