@@ -89,7 +89,7 @@ export default function TransitionsModal(props) {
 
   return (
     <div sx={{mt: 0 }}>
-      <Button onClick={handleOpen} sx={{mt: 0 }}>{props.product ? "Agregar Nueva Categoría" : `Agregar a ${props.name}`}</Button>
+      <Button onClick={handleOpen} sx={{mt: 0 }} variant="outlined">{props.product ? "Agregar Nueva Categoría" : `Agregar a ${props.name}`}</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

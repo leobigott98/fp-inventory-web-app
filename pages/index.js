@@ -5,6 +5,7 @@ import { withProtected } from '../src/hook/route'
 import BasicTable from '../components/BasicTable'
 import AddForm from "../components/AddForm"
 import Head from "next/head";
+import Stack from '@mui/material/Stack'
 
 
 function Home() {
@@ -14,7 +15,10 @@ function Home() {
     <Head>
       <title>Inventario</title>
       </Head>
-    <AddForm product/>
+    <Stack spacing={2} direction="row">
+    <AddForm product/> 
+    </Stack>
+    
     <BasicTable products/>
     </Layout>
   )
