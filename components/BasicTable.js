@@ -13,7 +13,8 @@ import {
   getComanderas,
   getComanderaHistory,
   getItems,
-  getItemHistory
+  getItemHistory,
+  getItemInfo
 } from "../src/service/DBService";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -21,6 +22,9 @@ import AddForm from '../components/AddForm'
 import AssignForm from '../components/AssignForm'
 import { TableSortLabel } from "@mui/material";
 import { CSVLink } from "react-csv";
+import ItemInfo from './ItemInfo';
+import Stack from '@mui/material/Stack';
+
 // import CircularProgress from '@mui/material/CircularProgress';
 // import Fade from '@mui/material/Fade';
 
@@ -42,6 +46,8 @@ export default function BasicTable(props) {
           setRows(await getItems(props.name));
         } else if (props.itemHistory){
           setRows(await getItemHistory(props.lastname, props.name));
+        } else if (props.itemInfo){
+          setRows(await getItemInfo(props.lastname, props.name))
         }
       }
       fetchData();
@@ -107,14 +113,25 @@ export default function BasicTable(props) {
                 <TableCell align="right">Usuario</TableCell>
                 
             </>
-            ) : (
+            ) : props.item? (
               <>
               <TableCell>Nombre</TableCell>
                 <TableCell align="right">Ubicación Física</TableCell>
                 <TableCell align="right">Cantidad</TableCell>
                 <TableCell align="right">Unidades</TableCell>
                 <TableCell align="center">Acción</TableCell>
-              </>
+                <TableCell align="center">Detalle</TableCell>
+              </> 
+            ) : (<>
+              <TableCell>Nombre</TableCell>
+                <TableCell align="right">Especificaciones</TableCell>
+                <TableCell align="right">Cantidad</TableCell>
+                <TableCell align="right">Unidades</TableCell>
+                <TableCell align="center">Ubicación</TableCell>
+                <TableCell align="center">Activo</TableCell>
+                <TableCell align="center">Fecha y Hora</TableCell>
+                <TableCell align="center">Usuario</TableCell>
+              </> 
             )}
           </TableRow>
         </TableHead>
@@ -197,7 +214,7 @@ export default function BasicTable(props) {
                   <TableCell key={row.user} align="right">{row.user}</TableCell>
                 </TableRow>
               </>
-            ) :  (
+            ) :  props.item? (
               <>
             <TableRow
                   key={row.name}
@@ -216,16 +233,40 @@ export default function BasicTable(props) {
                   <TableCell  align="right" onClick={() => {
                     router.push(`${props.name}/${row.name}`);
                   }}>{row.Unit}</TableCell>
-                  <TableCell  align="right"  sx={{display: "flex", justifyContent: "center", paddingLeft: 0, paddingRight: 0}}>
+                  <TableCell  align="right"  sx={{display: "flex", justifyContent: "center", paddingLeft: 0, paddingRight: 0, margin: 0}}>
 
-                  <AssignForm retirar name={row.name} productName={props.name}/>
-                  <AssignForm reponer name={row.name} productName={props.name}/>
+                  <Stack direction="row" spacing={1}>
+                    <AssignForm disabled={row.Quantity == 0 ? true: false} retirar name={row.name} productName={props.name}/>
+                    <AssignForm reponer name={row.name} productName={props.name}/>
+                  </Stack>
+
                   {/* <AssignForm editar name={row.name} productName={props.name}/> */}
                   
                   </TableCell>
+                  <TableCell  align="center"  >
+                    <ItemInfo name={row.name} category={props.name}/>
+                  </TableCell>
+
                 </TableRow>
                 </>
-            ) 
+            ) : (<>
+              <TableRow
+                  key={row.timestamp}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  // onClick={() => {
+                  //   router.push(`/comandera/${row.SN}`);
+                  // }}
+                >
+                  <TableCell key={row.name} align="right">{row.name}</TableCell>
+                  <TableCell key={row.Specs} align="right">{row.Specs}</TableCell>
+                  <TableCell key={row.Quantity} align="right">{row.Quantity}</TableCell>
+                  <TableCell key={row.Units} align="right">{row.Units}</TableCell>
+                  <TableCell key={row.Location} align="right">{row.Location}</TableCell>
+                  <TableCell key={row.active} align="right">{row.active}</TableCell>
+                  <TableCell key={row.timestamp} align="left" sx={{ margin: 0, paddingRight: 0 }}>{String(row.timestamp.toDate())}</TableCell>
+                  <TableCell key={row.user} align="right">{row.user}</TableCell>
+                </TableRow>
+            </>)
           )}{
             rows == ''?
             <>

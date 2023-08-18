@@ -146,6 +146,8 @@ export const withdraw = async (event, name, lastname, callback) => {
     person: event.target.person.value,
     user: auth.currentUser.email,
     timestamp: serverTimestamp(),
+    serial: event.target.serial.value,
+    observations: event.target.observations.value
   };
 
   console.log(lastname);
@@ -167,6 +169,7 @@ export const replenish = async (event, name, lastname, callback) => {
     person: event.target.person.value,
     user: auth.currentUser.email,
     timestamp: serverTimestamp(),
+    serial: event.target.serial.value
   };
 
   console.log(lastname);
@@ -194,6 +197,19 @@ export const getItemHistory = async (lastname, name) => {
   return data; 
   
 };
+
+export const getItemInfo = async(category, name) =>{
+  const docRef = doc(db, "products", category, "items", name);
+  const docSnap = await getDoc(docRef);
+
+if (docSnap.exists()) {
+  return docSnap.data()
+} else {
+  // doc.data() will be undefined in this case
+  console.log("No such document!");
+}
+
+}
 
 //Read all documents within the products collection
 export const getProducts = async () => {
