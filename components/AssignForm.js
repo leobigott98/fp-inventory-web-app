@@ -128,7 +128,7 @@ export default function TransitionsModal(props) {
 
   return (
     <div>
-      <Button onClick={handleOpen} variant="outlined">{props.comandera? `Gestionar Comandera ${props.sn}` : props.retirar? `Retirar` : props.reponer? `Reponer`: `Editar`}</Button>
+      <Button onClick={handleOpen} variant="outlined" disabled={props.disabled}>{props.comandera? `Gestionar Comandera ${props.sn}` : props.retirar? `Asignar` : props.reponer? `Reponer`: `Editar`}</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -183,6 +183,28 @@ export default function TransitionsModal(props) {
                           fullWidth
                           id="qty"
                           label="Cantidad"
+                          
+                          pattern="[A-z0-9]"
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          name="serial"
+                          
+                          fullWidth
+                          id="serial"
+                          label="Serial"
+                          
+                          pattern="[A-z0-9]"
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          name="observations"
+                          
+                          fullWidth
+                          id="observations"
+                          label="Observaciones"
                           
                           pattern="[A-z0-9]"
                         />
@@ -313,6 +335,17 @@ export default function TransitionsModal(props) {
                           fullWidth
                           id="qty"
                           label="Cantidad"
+                          
+                          pattern="[A-z0-9]"
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          name="serial"
+                          
+                          fullWidth
+                          id="serial"
+                          label="Serial"
                           
                           pattern="[A-z0-9]"
                         />
