@@ -14,7 +14,8 @@ import {
   getComanderaHistory,
   getItems,
   getItemHistory,
-  getItemInfo
+  getItemInfo,
+  getSeriales
 } from "../src/service/DBService";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -24,6 +25,10 @@ import { TableSortLabel } from "@mui/material";
 import { CSVLink } from "react-csv";
 import ItemInfo from './ItemInfo';
 import Stack from '@mui/material/Stack';
+import HistoryIcon from '@mui/icons-material/History';
+import Button from '@mui/material/Button';
+import AddItemForm from '../components/AddItemForm'
+import ListIcon from '@mui/icons-material/List';
 
 // import CircularProgress from '@mui/material/CircularProgress';
 // import Fade from '@mui/material/Fade';
@@ -48,6 +53,8 @@ export default function BasicTable(props) {
           setRows(await getItemHistory(props.lastname, props.name));
         } else if (props.itemInfo){
           setRows(await getItemInfo(props.lastname, props.name))
+        } else if(props.seriales){
+          setRows(await getSeriales(props.lastname, props.name))
         }
       }
       fetchData();
@@ -78,7 +85,7 @@ export default function BasicTable(props) {
       {/* <Button onClick={getProducts}>CLICK</Button> */}
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
-          <TableRow key={props}>
+          <TableRow key={props} >
             {props.products ? (
               <>
                 <TableCell>Nombre de la categoría</TableCell>
@@ -107,6 +114,7 @@ export default function BasicTable(props) {
             ) : props.itemHistory? (
               <>
                 <TableCell>Hora</TableCell>
+                <TableCell>Serial</TableCell>
                 <TableCell align="right">Acción</TableCell>
                 <TableCell align="right">Cantidad</TableCell>
                 <TableCell align="right">Entregado a/por</TableCell>
@@ -122,7 +130,13 @@ export default function BasicTable(props) {
                 <TableCell align="center">Acción</TableCell>
                 <TableCell align="center">Detalle</TableCell>
               </> 
-            ) : (<>
+            ) : props.seriales? (<>
+              <TableCell>Serial</TableCell>
+                <TableCell align="right">Estatus</TableCell>
+                <TableCell align="right">Hora de Creación</TableCell>
+                <TableCell align="right">Asignado a</TableCell>
+                <TableCell align="center">Creado por</TableCell>
+            </>) : (<>
               <TableCell>Nombre</TableCell>
                 <TableCell align="right">Especificaciones</TableCell>
                 <TableCell align="right">Cantidad</TableCell>
@@ -208,6 +222,7 @@ export default function BasicTable(props) {
                   <TableCell key={row.timestamp} align="left" sx={{ margin: 0, paddingRight: 0 }}>
                     {String(row.timestamp.toDate())}
                   </TableCell>
+                  <TableCell key={row.serial} align="left">{row.serial}</TableCell>
                   <TableCell key={row.type} align="right">{row.type}</TableCell>
                   <TableCell key={row.qty} align="right">{row.qty}</TableCell>
                   <TableCell key={row.person} align="right">{row.person}</TableCell>
@@ -219,7 +234,6 @@ export default function BasicTable(props) {
             <TableRow
                   key={row.name}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  hover
                 >
                   <TableCell  align="left" sx={{ margin: 0, paddingRight: 0 }} onClick={() => {
                     router.push(`${props.name}/${row.name}`);
@@ -243,13 +257,42 @@ export default function BasicTable(props) {
                   {/* <AssignForm editar name={row.name} productName={props.name}/> */}
                   
                   </TableCell>
-                  <TableCell  align="center"  >
-                    <ItemInfo name={row.name} category={props.name}/>
+                  <TableCell  align="center" sx={{padding: 0, margin: 0}} >
+                  <Stack direction="row" spacing={1}>
+                     <ItemInfo name={row.name} category={props.name}/>
+                     <Button onClick={() => {
+                    router.push(`${props.name}/${row.name}`);
+                  }}>
+                        <HistoryIcon/>
+                      </Button>
+                      <AddItemForm seriales={row.seriales} name={row.name} lastname={props.name}/>
+                      <Button onClick={() => {
+                    router.push(`${props.name}/${row.name}/serial`);
+                  }}>
+                        <ListIcon/>
+                      </Button>
+                  </Stack>
+                   
                   </TableCell>
 
                 </TableRow>
                 </>
-            ) : (<>
+            ) : props.seriales? (<>
+              <TableRow
+                  key={row.timestamp}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  // onClick={() => {
+                  //   router.push(`/comandera/${row.SN}`);
+                  // }}
+                >
+                  <TableCell key={row.serial} align="right">{row.serial}</TableCell>
+                  <TableCell key={row.serial} align="right">{row.status}</TableCell>
+                  <TableCell key={row.serial} align="right">{String(row.timestamp.toDate())}</TableCell>
+                  <TableCell key={row.serial} align="right">{row.asignedTo}</TableCell>
+                  <TableCell key={row.serial} align="right">{row.user}</TableCell>
+                </TableRow>
+
+            </>) : (<>
               <TableRow
                   key={row.timestamp}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

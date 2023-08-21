@@ -18,6 +18,8 @@ import { newProduct, newItem, getLocations, newLocation } from '../src/service/D
 import { useEffect, useState } from "react";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import Alert from '@mui/material/Alert';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 const style = {
   position: "absolute",
@@ -36,6 +38,7 @@ export default function TransitionsModal(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [checked, setChecked] = React.useState(false);
 
   const filter = createFilterOptions();
 
@@ -45,9 +48,9 @@ export default function TransitionsModal(props) {
 
   const [units, setUnits] = React.useState('');
   
-    const handleChange = (event) => {
-      setStatus(event.target.value);
-    };
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
 
     const handleUnitChange = (event) => {
       setUnits(event.target.value);
@@ -67,8 +70,6 @@ export default function TransitionsModal(props) {
       }
       fetchData();
     }, []);
-  
-    const [isNewlocation, setIsNewLocation] = useState(false);
 
   const validation = (e)=>{
     
@@ -80,10 +81,7 @@ export default function TransitionsModal(props) {
 
      if(props.product){
       newProduct(e, function () {refreshPage()})
-     } else if (isNewlocation) {
-      newLocation(e, function () {refreshPage()});
-      newItem(e,props.name, function () {refreshPage()})
-     } else newItem(e,props.name, function () {refreshPage()})   
+     } else newItem(e,props.name, checked, function () {refreshPage()})   
     handleClose()
   }
 
@@ -184,21 +182,6 @@ export default function TransitionsModal(props) {
                       </Grid>
                       
                       <Grid item xs={12}>
-                        {/* <FormControl fullWidth required>
-                          <InputLabel>Estatus</InputLabel>
-                          <Select
-                            id="status"
-                            label="Estatus"
-                            name="status"
-                            required
-                            value={status}
-                            onChange={handleChange}
-                          >
-                            <MenuItem value={"Disponible"}>Disponible</MenuItem>
-                            <MenuItem value={"Averiada"}>Dañada</MenuItem>
-                            <MenuItem value={"Asignada"}>Asignada</MenuItem>
-                          </Select>
-                        </FormControl> */}
                       </Grid>
                       <Grid item xs={12}>
                       <Autocomplete
@@ -244,6 +227,18 @@ export default function TransitionsModal(props) {
                           autoComplete="off"
                         />
                       </Grid>
+                      <Grid item xs={12}>
+                      <FormControlLabel
+                        label="Seriales"
+                        control={
+                          <Checkbox
+                          checked={checked}
+                          onChange={handleChange}
+                          />
+                        }
+                        />
+                      </Grid>
+
                     </Grid>
                     
                     </> : <>
