@@ -134,11 +134,11 @@ export const assignSerial = async (event, name, lastname, serial, callback) => {
 
   const Data = {
     type: "retiro",
-    qty: event.target.qty.value * -1,
-    person: event.target.person.value,
+    qty: -1,
+    person: data.assignedTo,
     user: auth.currentUser.email,
     timestamp: serverTimestamp(),
-    observations: event.target.observations.value
+    observations: '-'
   };
 
   await addDoc(collection(db, "products", lastname, "items", name, "history"), Data);

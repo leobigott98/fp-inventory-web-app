@@ -326,6 +326,7 @@ export default function BasicTable(props) {
                           seriales={row.seriales}
                           name={row.name}
                           lastname={props.name}
+                          disabled = {row.Quantity == 0 ? true : false}
                         />
                         <Button
                           onClick={() => {
