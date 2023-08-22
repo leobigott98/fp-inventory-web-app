@@ -15,7 +15,7 @@ import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import { newProduct, newItem, getLocations, newLocation, getStores, getSellers, withdraw, replenish, assignComandera, getComanderaInfo } from '../src/service/DBService';
+import { newProduct, newItem, getLocations, newLocation, getStores, getSellers, withdraw, replenish, assignComandera, getComanderaInfo, getItemInfo, getAvailableSeriales } from '../src/service/DBService';
 
 const style = {
   position: "absolute",
@@ -55,6 +55,10 @@ export default function TransitionsModal(props) {
 
   const [comanderaInfo, setComanderaInfo] = React.useState(['','']);
 
+  const [itemInfo, setItemIfo] = React.useState('');
+
+  const [seriales, setSeriales] = React.useState('');
+
   const handleReasonChange = (event) => {
     setReason(event.target.value);
   };
@@ -92,6 +96,20 @@ export default function TransitionsModal(props) {
       fetchData();
     }, [props.sn]);
 
+    React.useEffect(()=>{
+      async function fetchData(){
+        setItemIfo(await getItemInfo(props.productName, props.name));
+      }
+      fetchData();
+    },[props.productName, props.name]);
+
+    React.useEffect(()=>{
+      async function fetchData(){
+        setSeriales(await getAvailableSeriales(props.productName, props.name))
+      }
+      fetchData();
+    },[props.productName, props.name])
+
     const disponibleOptions = ["Vincular", "Averiada"]
 
     const asignadaOptions = ["Desvincular"]
@@ -128,7 +146,7 @@ export default function TransitionsModal(props) {
 
   return (
     <div>
-      <Button onClick={handleOpen} variant="outlined" disabled={props.disabled}>{props.comandera? `Gestionar Comandera ${props.sn}` : props.retirar? `Asignar` : props.reponer? `Reponer`: `Editar`}</Button>
+      <Button onClick={handleOpen} variant="outlined" disabled={props.disabled}>{props.comandera? `Gestionar Comandera ${props.sn}` : props.retirar? `Asignar` : props.reponer? `Ingresar`: `Editar`}</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -187,17 +205,23 @@ export default function TransitionsModal(props) {
                           pattern="[A-z0-9]"
                         />
                       </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          name="serial"
-                          
-                          fullWidth
-                          id="serial"
-                          label="Serial"
-                          
-                          pattern="[A-z0-9]"
+                      {itemInfo.seriales? 
+                      <>
+                      {seriales?
+                        <Grid item xs={12}>
+                        <FormControl fullWidth required>
+                        <Autocomplete
+                          disablePortal
+                          id="seriales"
+                          options={seriales.map((option) => option.serial)}
+                          //sx={{ width: 300 }}
+                          renderInput={(params) => <TextField {...params} label="Serial" />}
+                          required
                         />
+                        </FormControl>
                       </Grid>
+                      : <></>
+                      } </> : <></>}
                       <Grid item xs={12}>
                         <TextField
                           name="observations"
@@ -339,17 +363,20 @@ export default function TransitionsModal(props) {
                           pattern="[A-z0-9]"
                         />
                       </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          name="serial"
-                          
-                          fullWidth
-                          id="serial"
-                          label="Serial"
-                          
-                          pattern="[A-z0-9]"
+                      {itemInfo?.seriales?
+                        <Grid item xs={12}>
+                          <TextField
+                            name="serial"
+                            required
+                            fullWidth
+                            id="serial"
+                            label="Serial"
+                            
+                            pattern="[A-z0-9]"
                         />
-                      </Grid>
+                        </Grid>
+                      : <></>
+                      } 
 
                     </> : <>
                     <Grid container spacing={2}>

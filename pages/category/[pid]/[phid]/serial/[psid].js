@@ -1,13 +1,12 @@
-import Layout from '../../../../components/Layout'
-import { withProtected } from '../../../../src/hook/route'
+import Layout from '../../../../../components/Layout'
+import { withProtected } from '../../../../../src/hook/route'
 import { useRouter } from 'next/router'
-import AddForm from '../../../../components/AddForm'
-import BasicTable from '../../../../components/BasicTable'
+import BasicTable from '../../../../../components/BasicTable'
 import Head from "next/head";
 
 const History = () => {
   const router = useRouter()
-  const { phid } = router.query
+  const { psid } = router.query
   const route = router.asPath
 
 /*   const validRoute = (route.split("/")[2]) =>{
@@ -17,10 +16,10 @@ const History = () => {
   return (
     <Layout>
     <Head>
-      <title>Seriales {phid}</title>
+      <title>Historial {psid}</title>
       </Head>    
      <BasicTable 
-      name = {phid}
+      name = {psid}
       lastname = {route.split("/")[2].replace(/%20/g,' ')}
       seriales
     /> 
