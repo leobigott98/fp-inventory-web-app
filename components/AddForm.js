@@ -173,7 +173,7 @@ export default function TransitionsModal(props) {
                             value={units}
                             onChange={handleUnitChange}
                           >
-                            <MenuItem value={"Unidades"}>Piezas</MenuItem>
+                            <MenuItem value={"Unidades"}>Unidades</MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>
