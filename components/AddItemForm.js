@@ -94,7 +94,18 @@ export default function TransitionsModal(props) {
                           pattern="[A-z0-9]"
                         />
                       </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          
+                          fullWidth
+                          id="comments"
+                          label="Comentarios"
+                          name="comments"
+                          pattern="[A-Za-zÀ-ÖØ-öø-ÿ\s]"
+                        />
+                      </Grid>
                     </Grid>
+                    
                     </> 
                     </Grid>
                     <Grid container spacing={3}>

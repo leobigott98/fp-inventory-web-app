@@ -100,8 +100,13 @@ export const newSerial = async (event, name, lastname, callback) => {
     serial: serial.toUpperCase(),
     timestamp: serverTimestamp(),
     status: 'disponible',
-    assignedTo: ''
+    assignedTo: '',
+    comments: null
   };
+
+  if(event.target.comments.value != null){
+    data.comments = event.target.comments.value;
+  }
 
   await setDoc(doc(db, "products", lastname, "items", name, "seriales", data.serial), data);
 
@@ -117,7 +122,7 @@ export const assignSerial = async (event, name, lastname, serial, callback) => {
     action: event.target.action.value,
     assignedTo: null,
     status: null,
-    location: event.target.location.value
+    location: event.target.location.value,
   };
 
   if(data.action == 'Asignar'){
