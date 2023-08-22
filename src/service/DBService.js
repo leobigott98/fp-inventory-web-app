@@ -131,7 +131,8 @@ export const assignSerial = async (event, name, lastname, serial, callback) => {
   await addDoc(collection(db, "products", lastname, "items", name, "seriales", serial, "history"), data);
   await updateDoc(doc(db, "products", lastname, "items", name, "seriales", serial), {
     assignedTo: data.assignedTo,
-    status: data.status
+    status: data.status,
+    location: data.location
   });
 
   const Data = {
