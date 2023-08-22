@@ -93,9 +93,11 @@ export const newItem = async (event, name, checked, callback) => {
 export const newSerial = async (event, name, lastname, callback) => {
   event.preventDefault();
 
+  const serial = event.target.serial.value
+
   const data = {
     user: auth.currentUser.email,
-    serial: event.target.serial.value,
+    serial: serial.toUpperCase(),
     timestamp: serverTimestamp(),
     status: 'disponible',
     assignedTo: ''
