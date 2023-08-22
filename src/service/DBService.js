@@ -132,6 +132,20 @@ export const assignSerial = async (event, name, lastname, serial, callback) => {
     status: data.status
   });
 
+  const Data = {
+    type: "retiro",
+    qty: event.target.qty.value * -1,
+    person: event.target.person.value,
+    user: auth.currentUser.email,
+    timestamp: serverTimestamp(),
+    observations: event.target.observations.value
+  };
+
+  await addDoc(collection(db, "products", lastname, "items", name, "history"), Data);
+  await updateDoc(doc(db, "products", lastname, "items", name), {
+    Quantity: increment(Data.qty)
+  });
+
   callback()
 };
 
@@ -256,16 +270,35 @@ export const withdraw = async (event, name, lastname, callback) => {
     person: event.target.person.value,
     user: auth.currentUser.email,
     timestamp: serverTimestamp(),
-    serial: event.target.serial.value,
+    serial: null,
     observations: event.target.observations.value
   };
 
-  console.log(lastname);
-  console.log(name);
+  if(event.target.seriales.value != null) {
+    data.serial = event.target.seriales.value
+  }
+
   await addDoc(collection(db, "products", lastname, "items", name, "history"), data);
   await updateDoc(doc(db, "products", lastname, "items", name), {
     Quantity: increment(data.qty)
   });
+
+  if(event.target.seriales.value != null){
+    const Data = {
+      user: auth.currentUser.email,
+      timestamp: serverTimestamp(),
+      action: 'Asignar',
+      assignedTo: data.person,
+      status: 'asignado',
+      location: event.target.location.value
+    };
+  
+    await addDoc(collection(db, "products", lastname, "items", name, "seriales", data.serial, "history"), Data);
+    await updateDoc(doc(db, "products", lastname, "items", name, "seriales", data.serial), {
+      assignedTo: Data.assignedTo,
+      status: Data.status
+    });
+  }
 
   callback()
 };
