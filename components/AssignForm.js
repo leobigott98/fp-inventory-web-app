@@ -208,6 +208,7 @@ export default function TransitionsModal(props) {
                       {itemInfo.seriales? 
                       <>
                       {seriales?
+                      <>
                         <Grid item xs={12}>
                         <FormControl fullWidth required>
                         <Autocomplete
@@ -220,6 +221,39 @@ export default function TransitionsModal(props) {
                         />
                         </FormControl>
                       </Grid>
+                      <Grid item xs={12}>
+                      <Autocomplete
+                        value={value}
+                        selectOnFocus
+                        clearOnBlur
+                        handleHomeEndKeys
+                        id="location"
+                        onChange={(event, newValue) => {
+                          setValue(newValue);
+                          }}
+                        options={data}
+                        getOptionLabel={(option) => {
+                          // Value selected with enter, right from the input
+                          if (typeof option === "string") {
+                            return option;
+                          }
+                          // Add "xxx" option created dynamically
+                          if (option.inputValue) {
+                            return option.inputValue;
+                          }
+                          // Regular option
+                          return option.name;
+                        }}
+                        renderOption={(props, option) => (
+                          <li {...props}>{option.name}</li>
+                        )}
+                        sx={{ width: "100%" }}
+                        renderInput={(params) => (
+                          <TextField {...params} label="Ubicación Física" />
+                        )}
+                      />
+                    </Grid>
+                        </>
                       : <></>
                       } </> : <></>}
                       <Grid item xs={12}>
