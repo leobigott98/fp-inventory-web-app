@@ -253,26 +253,6 @@ export default function TransitionsModal(props) {
                             sx={{ width: "100%" }}
                             renderInput={(params) => <TextField {...params} label="Acción" />}
                           /> 
-                          {/* <Select
-                            id="action"
-                            label="Acción"
-                            name="action"
-                            required
-                            value={action}
-                            onChange={handleChange}
-                          >
-                             { 
-                              comanderaInfo == "Asignada"? 
-                            <MenuItem value={"Desvincular"}>Desvincular</MenuItem> 
-                            : comanderaInfo == "Disponible"? 
-                            <>
-                            <MenuItem value={"Vincular"}>Vincular</MenuItem>
-                            <MenuItem value={"Averiada"}>Averiada</MenuItem>
-                            </>
-                            : 
-                            <MenuItem value={"Disponible"}>Disponible</MenuItem> 
-                            }  
-                          </Select> */}
                         </FormControl>
                       </Grid>
                       {action === "Desvincular" ? <>
@@ -371,7 +351,6 @@ export default function TransitionsModal(props) {
                             fullWidth
                             id="serial"
                             label="Serial"
-                            
                             pattern="[A-z0-9]"
                         />
                         </Grid>
@@ -424,10 +403,7 @@ export default function TransitionsModal(props) {
                             value={units}
                             onChange={handleUnitChange}
                           >
-                            <MenuItem value={"Piezas"}>Piezas</MenuItem>
-                            <MenuItem value={"Metros"}>Metros</MenuItem>
-                            <MenuItem value={"Kg"}>Kg</MenuItem>
-                            <MenuItem value={"Litros"}>Litros</MenuItem>
+                            <MenuItem value={"Unidades"}>Piezas</MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>

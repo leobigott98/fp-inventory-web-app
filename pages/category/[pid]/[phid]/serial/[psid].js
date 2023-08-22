@@ -19,9 +19,10 @@ const History = () => {
       <title>Historial {psid}</title>
       </Head>    
      <BasicTable 
-      name = {psid}
-      lastname = {route.split("/")[2].replace(/%20/g,' ')}
-      seriales
+      serial = {psid}
+      product = {route.split("/")[3].replace(/%20/g,' ')}
+      category = {route.split("/")[2].replace(/%20/g,' ')}
+      serialHistory
     /> 
     </Layout>
   )

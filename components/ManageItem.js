@@ -10,8 +10,11 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { assignSerial } from "../src/service/DBService";
+import { assignSerial, getSerialInfo, getLocations } from "../src/service/DBService";
 import SettingsIcon from '@mui/icons-material/Settings';
+import FormControl from "@mui/material/FormControl";
+import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
+
 
 const style = {
   position: "absolute",
@@ -29,12 +32,36 @@ export default function TransitionsModal(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [serialInfo, setSerialInfo] = React.useState(null)
+  const [action, setAction] = React.useState("");
+  const [value, setValue] = React.useState(null);
+  const [data, setData] = React.useState(['','']);
 
   const theme = createTheme();
 
   function refreshPage(){
     window.location.reload(false);
   }
+
+  React.useEffect(() => {
+    async function fetchData() {
+      setData(await getLocations());
+    }
+    fetchData();
+  }, []);
+
+  React.useEffect(()=>{
+    async function fetchData(){
+      setSerialInfo(await getSerialInfo(props.lastname, props.name, props.serial))
+    }
+    fetchData();
+  },[props.lastname, props.name, props.serial])
+
+    const disponibleOptions = ["Asignar", "Dañado"]
+
+    const asignadaOptions = ["Desasignar"]
+
+    const averiadaOptions = ["Disponible"]
 
     
   const handleSubmit = async (e) => {
@@ -82,18 +109,73 @@ export default function TransitionsModal(props) {
                   >
                     <Grid container spacing={2}>
                      <>
-                    <Grid container spacing={2}>
+                    {serialInfo?.status == 'disponible'? <>
                     <Grid item xs={12}>
                         <TextField
                           required
                           fullWidth
-                          id="serial"
-                          label="Serial"
-                          name="serial"
+                          id="assignedTo"
+                          label="Asignar a"
+                          name="assignedTo"
                           pattern="[A-z0-9]"
                         />
                       </Grid>
+                      </> : <></>
+                    }
+                    
+                    <Grid item xs={12}>
+                    <FormControl fullWidth required>
+                          {/* <InputLabel>Acción</InputLabel> */}
+                          <Autocomplete
+                            //disablePortal
+                            id="action"
+                            //name = "action"
+                            //required
+                            isOptionEqualToValue={(option, value) => option.id === value.id}
+                            value={action}
+                            onChange={(event, newValue) =>{
+                              setAction(newValue);
+                            }}
+                            options={serialInfo?.status == "disponible"? disponibleOptions : serialInfo?.status == "asignado"? asignadaOptions : averiadaOptions}
+                            //options = {disponibleOptions}
+                            sx={{ width: "100%" }}
+                            renderInput={(params) => <TextField {...params} label="Acción" />}
+                          /> 
+                        </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                      <Autocomplete
+                        value={value}
+                        selectOnFocus
+                        clearOnBlur
+                        handleHomeEndKeys
+                        id="location"
+                        onChange={(event, newValue) => {
+                          setValue(newValue);
+                          }}
+                        options={data}
+                        getOptionLabel={(option) => {
+                          // Value selected with enter, right from the input
+                          if (typeof option === "string") {
+                            return option;
+                          }
+                          // Add "xxx" option created dynamically
+                          if (option.inputValue) {
+                            return option.inputValue;
+                          }
+                          // Regular option
+                          return option.name;
+                        }}
+                        renderOption={(props, option) => (
+                          <li {...props}>{option.name}</li>
+                        )}
+                        sx={{ width: "100%" }}
+                        renderInput={(params) => (
+                          <TextField {...params} label="Ubicación Física" />
+                        )}
+                      />
                     </Grid>
+                        
                     </> 
                     </Grid>
                     <Grid container spacing={3}>

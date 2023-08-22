@@ -3,6 +3,7 @@ import { getAuth } from "firebase/auth";
 import { getApp } from "firebase/app";
 import { saveAs } from "file-saver";
 import { Document, Packer, Paragraph, TextRun } from "docx"; 
+import serial from "../../pages/category/[pid]/[phid]/serial";
 
 const db = getFirestore(getApp);
 const auth = getAuth();
@@ -112,15 +113,18 @@ export const assignSerial = async (event, name, lastname, serial, callback) => {
     user: auth.currentUser.email,
     timestamp: serverTimestamp(),
     action: event.target.action.value,
-    assignedTo: event.target.assignedTo.value,
-    status: null
+    assignedTo: null,
+    status: null,
+    location: event.target.location.value
   };
 
-  if(data.action == 'asignar'){
+  if(data.action == 'Asignar'){
     data.status = 'asignado'
-  }else if(data.action == 'desasignar'){
-    data.status == 'disponible'
-  }else data.status == data.action
+    data.assignedTo = event.target.assignedTo.value
+  }else if(data.action == 'Desasignar'){
+    data.status = 'disponible'
+    data.assignedTo = ''
+  }else data.status == 'averiado'
 
   await addDoc(collection(db, "products", lastname, "items", name, "seriales", serial, "history"), data);
   await updateDoc(doc(db, "products", lastname, "items", name, "seriales", serial), {
@@ -214,23 +218,20 @@ export const getAvailableSeriales = async (lastname, name) => {
 };
 
 export const getSerialInfo = async (lastname, name, serial) => {
-  const q = query(collection(db, "products", lastname, "items", name, "seriales"), orderBy("timestamp", "desc"));
-  const querySnapshot = await getDocs(q);
-  
+  const docRef = doc(db, "products", lastname, "items", name, "seriales", serial);
+  const docSnap = await getDoc(docRef);
 
-  const data = [];
-
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    data.push(doc.data());
-  });
-
-  return data; 
+  if (docSnap.exists()) {
+    return docSnap.data()
+  } else {
+    // doc.data() will be undefined in this case
+    console.log("No such document!");
+  } 
   
 };
 
-export const getSerialHistory = async (lastname, name) => {
-  const q = query(collection(db, "products", lastname, "items", name, "seriales"), orderBy("timestamp", "desc"));
+export const getSerialHistory = async (lastname, name, serial) => {
+  const q = query(collection(db, "products", lastname, "items", name, "seriales", serial, "history"), orderBy("timestamp", "desc"));
   const querySnapshot = await getDocs(q);
   
 
@@ -336,7 +337,7 @@ export const getProducts = async () => {
 };
 
 export const getLocations = async () => {
-  const q = query(collection(db, "locations"), orderBy("timestamp", "desc"));
+  const q = query(collection(db, "locations"), orderBy("name", "asc"));
   const querySnapshot = await getDocs(q);
 
   const data = [];

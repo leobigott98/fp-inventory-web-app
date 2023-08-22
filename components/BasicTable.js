@@ -16,6 +16,7 @@ import {
   getItemHistory,
   getItemInfo,
   getSeriales,
+  getSerialHistory
 } from "../src/service/DBService";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -56,6 +57,8 @@ export default function BasicTable(props) {
         setRows(await getItemInfo(props.lastname, props.name));
       } else if (props.seriales) {
         setRows(await getSeriales(props.lastname, props.name));
+      } else if (props.serialHistory){
+        setRows(await getSerialHistory(props.category, props.product, props.serial))
       }
     }
     fetchData();
@@ -129,7 +132,15 @@ export default function BasicTable(props) {
                   <TableCell align="center">Creado por</TableCell>
                   <TableCell align="center">Acciones</TableCell>
                 </>
-              ) : (
+              ) : props.serialHistory? (<>
+                  <TableCell align="center">Fecha y Hora</TableCell>
+                  <TableCell align="right">Ubicación</TableCell>
+                  <TableCell align="right">Asignado a</TableCell>
+                  <TableCell align="right">Estatus</TableCell>
+                  <TableCell align="right">Acción</TableCell>
+                  <TableCell align="center">Usuario</TableCell>
+
+              </>) : (
                 <>
                   <TableCell>Nombre</TableCell>
                   <TableCell align="right">Especificaciones</TableCell>
@@ -364,7 +375,40 @@ export default function BasicTable(props) {
                     </TableCell>
                   </TableRow>
                 </>
-              ) : (
+              ) : props.serialHistory? (<>
+              
+                <TableRow
+                    key={row.timestamp}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    // onClick={() => {
+                    //   router.push(`/comandera/${row.SN}`);
+                    // }}
+                  >
+                    <TableCell
+                      key={row.timestamp}
+                      align="left"
+                      sx={{ margin: 0, paddingRight: 0 }}
+                    >
+                      {String(row.timestamp.toDate())}
+                    </TableCell>
+                    <TableCell  align="right">
+                      {row.location? row.location : '-'}
+                    </TableCell>
+                    <TableCell  align="right">
+                      {row.assignedTo? row.assignedTo : '-'}
+                    </TableCell>
+                    <TableCell  align="right">
+                      {row.status}
+                    </TableCell>
+                    <TableCell  align="right">
+                      {row.action}
+                    </TableCell>
+                    <TableCell  align="right">
+                      {row.user}
+                    </TableCell>
+                    
+                  </TableRow>
+              </>) : (
                 <>
                   <TableRow
                     key={row.timestamp}
