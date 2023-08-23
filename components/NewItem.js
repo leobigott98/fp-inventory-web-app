@@ -19,6 +19,8 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import { useEffect, useState } from "react";
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
 import {
   getLocations,
   newLocation,
@@ -45,6 +47,8 @@ export default function FullScreenDialog() {
   const filter = createFilterOptions();
 
   const [data, setData] = useState(null);
+
+  const [errorOpen, setErrorOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -81,9 +85,17 @@ export default function FullScreenDialog() {
     window.location.reload(false);
   }
 
+  function showAlert(){
+    setErrorOpen(true)
+  }
+
+  function printError () {
+    showAlert();
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-     await newComandera(event, function () {refreshPage()});
+     await newComandera(event, function () {printError()}, function () {refreshPage()});
     handleClose();
   };
 
@@ -92,6 +104,25 @@ export default function FullScreenDialog() {
       <Button variant="outlined" onClick={handleClickOpen}>
         Agregar Nueva Comandera
       </Button>
+      <Collapse in={errorOpen}>
+                        <Alert severity="error"
+                          action={
+                            <IconButton
+                              aria-label="close"
+                              color="inherit"
+                              size="small"
+                              onClick={() => {
+                                setErrorOpen(false);
+                              }}
+                            >
+                              <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                          }
+                          sx={{ m: 0 }}
+                        >
+                          El serial ya existe
+                        </Alert>
+                    </Collapse>
       <Dialog
         fullScreen
         open={open}
@@ -148,6 +179,7 @@ export default function FullScreenDialog() {
                         pattern="[A-Z0-9]{15}"
                       />
                     </Grid>
+                    
                     {/* <Grid item xs={12} sm={6}>
                       <TextField
                         required

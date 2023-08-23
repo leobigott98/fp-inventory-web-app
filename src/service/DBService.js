@@ -45,7 +45,7 @@ export const newLocation = async (event, callback) => {
 };
 
 //Add a new Comandera
-export const newComandera = async (event, callback) => {
+export const newComandera = async (event, errorFunction, callback) => {
   event.preventDefault();
 
   const data = {
@@ -66,10 +66,18 @@ export const newComandera = async (event, callback) => {
     timestamp: serverTimestamp(),
     active: true,
   };
-
-  await setDoc(doc(db, "comanderas", data.SN), data);
-
-  callback()
+  
+  try{
+    await setDoc(doc(db, "comanderas", data.SN), data)
+  }catch{
+    errorFunction()
+    var error = true;
+  }
+  
+  if(!error){
+    callback();
+  }
+  
 };
 
 //Add a new Item within a product subcollection

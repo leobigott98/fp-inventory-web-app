@@ -73,20 +73,31 @@ export default function TransitionsModal(props) {
   }
 
   React.useEffect(() => {
-    async function fetchData() {
-      setStores(await getStores());
+      async function fetchData() {
+        if(props.comandera){
+        setStores(await getStores());
+        setSellers(await getSellers());
+        setData(await getLocations());
+        if(props.sn){
+          setComanderaInfo(await getComanderaInfo(props.sn));
+        }
+      } else {
+        setItemIfo(await getItemInfo(props.productName, props.name));
+        setSeriales(await getAvailableSeriales(props.productName, props.name));
+        setData(await getLocations());
+      }
     }
     fetchData();
-  }, []);
+  }, [props.sn, props.productName, props.name]);
 
-  React.useEffect(() => {
+ /*  React.useEffect(() => {
     async function fetchData() {
       setSellers(await getSellers());
     }
     fetchData();
-  }, []);
+  }, []); */
 
-    React.useEffect(() => {
+   /*  React.useEffect(() => {
       async function fetchData() {
         setData(await getLocations());
         if(props.sn){
@@ -94,21 +105,21 @@ export default function TransitionsModal(props) {
         }
       }
       fetchData();
-    }, [props.sn]);
+    }, [props.sn]); */
 
-    React.useEffect(()=>{
+    /* React.useEffect(()=>{
       async function fetchData(){
         setItemIfo(await getItemInfo(props.productName, props.name));
       }
       fetchData();
-    },[props.productName, props.name]);
+    },[props.productName, props.name]); */
 
-    React.useEffect(()=>{
+    /* React.useEffect(()=>{
       async function fetchData(){
         setSeriales(await getAvailableSeriales(props.productName, props.name))
       }
       fetchData();
-    },[props.productName, props.name])
+    },[props.productName, props.name]) */
 
     const disponibleOptions = ["Vincular", "Averiada"]
 

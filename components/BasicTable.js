@@ -302,11 +302,13 @@ export default function BasicTable(props) {
                           retirar
                           name={row.name}
                           productName={props.name}
+                          product
                         />
                         <AssignForm
                           reponer
                           name={row.name}
                           productName={props.name}
+                          product
                         />
                       </Stack>
 
