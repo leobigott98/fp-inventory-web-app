@@ -121,7 +121,7 @@ export default function TransitionsModal(props) {
                 >
                   <Box
                     component="form"
-                    noValidate
+                    //noValidate
                     //FIX THIS!!! CREATE A HANDLESUBMIT FUNCTION!!
                     onSubmit={(e) => handleSubmit(e)}
                     // onSubmit={ props.product? newProduct : newItem(e,props.name)   }

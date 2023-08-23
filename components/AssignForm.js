@@ -15,7 +15,7 @@ import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import { newProduct, newItem, getLocations, newLocation, getStores, getSellers, withdraw, replenish, assignComandera, getComanderaInfo, getItemInfo, getAvailableSeriales } from '../src/service/DBService';
+import { newProduct, newItem, getLocations, newLocation, getStores, getSellers, withdraw, withdrawNS, replenish, replenishNS, assignComandera, getComanderaInfo, getItemInfo, getAvailableSeriales } from '../src/service/DBService';
 
 const style = {
   position: "absolute",
@@ -127,8 +127,10 @@ export default function TransitionsModal(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     {props.comandera? await assignComandera(e, props.sn, comanderaInfo[1], function () {refreshPage()}): 
-    props.retirar? await withdraw(e, props.name, props.productName, function () {refreshPage()}):
-    props.reponer? await replenish(e, props.name, props.productName, function () {refreshPage()}):
+    props.retirar? itemInfo.seriales? await withdraw(e, props.name, props.productName, function () {refreshPage()}):
+    await withdrawNS(e, props.name, props.productName, function () {refreshPage()}) :
+    props.reponer? itemInfo.seriales? await replenish(e, props.name, props.productName, function () {refreshPage()}):
+    await replenishNS(e, props.name, props.productName, function () {refreshPage()}):
     await assignComandera(e, props.sn, function () {refreshPage()})}
     
     handleClose();

@@ -133,7 +133,7 @@ export default function FullScreenDialog() {
               >
                 <Box
                   component="form"
-                  noValidate
+                  //noValidate
                   onSubmit={(e) => handleSubmit(e)}
                   sx={{ mt: 2 }}
                 >
@@ -148,7 +148,7 @@ export default function FullScreenDialog() {
                         pattern="[A-Z0-9]{15}"
                       />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    {/* <Grid item xs={12} sm={6}>
                       <TextField
                         required
                         fullWidth
@@ -157,7 +157,7 @@ export default function FullScreenDialog() {
                         name="model"
                         pattern="[A-Z0-9]{3,}"
                       />
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12} sm={6}>
                       <TextField
                         required
@@ -178,7 +178,7 @@ export default function FullScreenDialog() {
                         pattern="[0-9]{15}"
                       />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    {/* <Grid item xs={12} sm={6}>
                       <FormControl fullWidth required>
                         <InputLabel>Estatus</InputLabel>
                         <Select
@@ -194,8 +194,8 @@ export default function FullScreenDialog() {
                           <MenuItem value={"Asignada"}>Asignada</MenuItem>
                         </Select>
                       </FormControl> 
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
+                    </Grid> */}
+                    {/* <Grid item xs={12} sm={6}>
                       <TextField
                         fullWidth
                         id="caja"
@@ -203,8 +203,8 @@ export default function FullScreenDialog() {
                         name="caja"
                         pattern="[A-Za-z0-9]{1,}"
                       />
-                    </Grid>
-                    <Grid item xs={12}>
+                    </Grid> */}
+                    {/* <Grid item xs={12}>
                       <Autocomplete
                         value={value}
                         selectOnFocus
@@ -235,7 +235,7 @@ export default function FullScreenDialog() {
                           <TextField {...params} label="Ubicación Física" />
                         )}
                       />
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12}>
                       <TextField
                         noValidate

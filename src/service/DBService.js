@@ -50,12 +50,16 @@ export const newComandera = async (event, callback) => {
 
   const data = {
     SN: event.target.sn.value,
-    Model: event.target.model.value,
+    //Model: event.target.model.value,
+    Model: 'T1N',
     IMEI1: event.target.imei.value,
     IMEI2: event.target.imeii.value,
-    Estatus: event.target.status.value,
-    Caja: event.target.caja.value,
-    Location: event.target.location.value,
+    //Estatus: event.target.status.value,
+    Estatus: 'Disponible',
+    //Caja: event.target.caja.value,
+    Caja: '',
+    //Location: event.target.location.value,
+    Location: 'Depósito 1 (Fedur)',
     Comments: event.target.comments.value,
     user: auth.currentUser.email,
     timestamp: serverTimestamp(),
@@ -311,6 +315,45 @@ export const withdraw = async (event, name, lastname, callback) => {
   callback()
 };
 
+export const withdrawNS = async (event, name, lastname, callback) => {
+  event.preventDefault();
+
+  const data = {
+    type: "retiro",
+    qty: event.target.qty.value * -1,
+    person: event.target.person.value,
+    user: auth.currentUser.email,
+    timestamp: serverTimestamp(),
+    observations: event.target.observations.value
+  };
+
+  await addDoc(collection(db, "products", lastname, "items", name, "history"), data);
+  await updateDoc(doc(db, "products", lastname, "items", name), {
+    Quantity: increment(data.qty)
+  });
+
+  callback()
+};
+
+export const replenishNS = async (event, name, lastname, callback) => {
+  event.preventDefault();
+
+  const data = {
+    type: "reposición",
+    qty: event.target.qty.value,
+    person: event.target.person.value,
+    user: auth.currentUser.email,
+    timestamp: serverTimestamp(),
+  };
+
+  await addDoc(collection(db, "products", lastname, "items", name, "history"), data);
+  await updateDoc(doc(db, "products", lastname, "items", name), {
+    Quantity: increment(data.qty)
+  });
+
+  callback()
+};
+
 export const replenish = async (event, name, lastname, callback) => {
   event.preventDefault();
 
@@ -323,8 +366,6 @@ export const replenish = async (event, name, lastname, callback) => {
     serial: event.target.serial.value
   };
 
-  console.log(lastname);
-  console.log(name);
   await addDoc(collection(db, "products", lastname, "items", name, "history"), data);
   await updateDoc(doc(db, "products", lastname, "items", name), {
     Quantity: increment(data.qty)
