@@ -94,6 +94,7 @@ export default function TransitionsModal(props) {
         open={open}
         onClose={handleClose}
         closeAfterTransition
+        //disableScrollLock={false}
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,

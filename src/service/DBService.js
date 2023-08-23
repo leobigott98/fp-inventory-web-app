@@ -131,7 +131,7 @@ export const assignSerial = async (event, name, lastname, serial, callback) => {
   }else if(data.action == 'Desasignar'){
     data.status = 'disponible'
     data.assignedTo = ''
-  }else data.status == 'averiado'
+  }else data.status = 'averiado'
 
   await addDoc(collection(db, "products", lastname, "items", name, "seriales", serial, "history"), data);
   await updateDoc(doc(db, "products", lastname, "items", name, "seriales", serial), {
