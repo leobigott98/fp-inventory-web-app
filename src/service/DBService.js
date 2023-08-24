@@ -413,7 +413,7 @@ if (docSnap.exists()) {
 
 //Read all documents within the products collection
 export const getProducts = async () => {
-  const q = query(collection(db, "products"), orderBy("timestamp", "desc"));
+  const q = query(collection(db, "products"), orderBy("name", "asc"));
   const querySnapshot = await getDocs(q);
 
   const data = [];
@@ -513,7 +513,7 @@ export const getComanderaHistory = async (sn) => {
 };
 
 export const getItems = async(name) =>{
-  const q = query(collection(db, "products", name, "items"), orderBy("timestamp", "desc"));
+  const q = query(collection(db, "products", name, "items"), orderBy("name", "asc"));
   const querySnapshot = await getDocs(q);
 
   const data = [];
