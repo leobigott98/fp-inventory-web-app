@@ -79,7 +79,7 @@ export default function SignUp() {
 
   const validateEmail = (input) => {
     //const pattern = /([A-z.]{3,}@tiendapuntogo.com)/;
-    const pattern = /([A-z.]{3,}@gmail.com)|([A-z.]{3,}@tiendapuntogo.com)/;
+    const pattern = /([A-z.]{3,}@gmail.com)|([A-z.]{3,}@tiendapuntogo.com) |([A-z.]{3,}@fastpayment.com.ve) |([A-z.]{3,}@puntogove.com)/;
     let valid = pattern.test(input);
     return valid;
   };
