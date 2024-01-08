@@ -16,10 +16,10 @@ function Home() {
       <title>Inventario</title>
       </Head>
     <Stack spacing={2} direction="row">
-    <AddForm product/> 
+   {/*  <AddForm product/>  */}
     </Stack>
     
-    <BasicTable products/>
+    <BasicTable categories/>
     </Layout>
   )
 };

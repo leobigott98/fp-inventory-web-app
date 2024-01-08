@@ -18,7 +18,7 @@ import { useState, useEffect } from "react";
 import { getUserData } from "../src/service/DBService";
 import Image from "next/image";
 
-const pages = [{name: "Inicio"}, {name: "Comanderas"}];
+const pages = [{name: "Inicio"}];
 const settings = [{name: "Perfil"}, {name: "Cerrar Sesión"}];
 
 function stringToColor(string) {

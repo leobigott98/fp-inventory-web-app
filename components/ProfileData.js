@@ -107,20 +107,20 @@ export default function ProfileData() {
                     disabled
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                 <Grid item xs={12}>
                   <FormControl fullWidth >
                     <TextField
-                      id="department"
-                      label="Department"
-                      name="department"
-                      value={rows.department}
-                      defaultValue="Department"
+                      id="role"
+                      label="Rol"
+                      name="rol"
+                      value={rows.role}
+                      defaultValue="Rol"
                     disabled
                       
                     />   
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                {/* <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     id="jobTitle"
@@ -130,7 +130,7 @@ export default function ProfileData() {
                     defaultValue="Job Title"
                     disabled
                   />
-                </Grid>
+                </Grid> */} 
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
@@ -142,9 +142,9 @@ export default function ProfileData() {
                     disabled
                   />
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                 <FormControlLabel disabled control={<Switch  />} label="Admin" />
-                </Grid>              
+                </Grid>  */}             
               </Grid>
               <Grid container justifyContent="flex-end">
                 <Grid item>

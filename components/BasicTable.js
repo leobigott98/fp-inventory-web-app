@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 // import Button from '@mui/material/Button';
 import {
-  getProducts,
+  getCategories,
   getComanderas,
   getComanderaHistory,
   getItems,
@@ -43,8 +43,8 @@ export default function BasicTable(props) {
 
   useEffect(() => {
     async function fetchData() {
-      if (props.products) {
-        setRows(await getProducts());
+      if (props.categories) {
+        setRows(await getCategories());
       } else if (props.comanderas) {
         setRows(await getComanderas());
       } else if (props.assignments) {
@@ -63,7 +63,7 @@ export default function BasicTable(props) {
     }
     fetchData();
   }, [
-    props.products,
+    props.categories,
     props.comanderas,
     props.assignments,
     props.item,
@@ -80,11 +80,11 @@ export default function BasicTable(props) {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow key={props} >
-              {props.products ? (
+              {props.categories ? (
                 <>
                   <TableCell>Nombre de la categoría</TableCell>
-                  <TableCell align="right">Activo</TableCell>
-                  <TableCell align="right">Creado por</TableCell>
+                  <TableCell align="right">Número de elementos</TableCell>
+                  <TableCell align="right">Fecha de Creación</TableCell>
                 </>
               ) : props.comanderas ? (
                 <>
@@ -156,7 +156,7 @@ export default function BasicTable(props) {
           </TableHead>
           <TableBody>
             {rows?.map((row) =>
-              props.products ? (
+              props.categories ? (
                 <>
                   <TableRow
                     hover
@@ -171,11 +171,11 @@ export default function BasicTable(props) {
                     <TableCell key={row.name} component="th" scope="row">
                       {row.name}
                     </TableCell>
-                    <TableCell key={row.active} align="right">
-                      {String(row.active)}
+                    <TableCell key={row.number_of_elements} align="right">
+                      {String(row.number_of_elements)}
                     </TableCell>
-                    <TableCell key={row.user} align="right">
-                      {row.user}
+                    <TableCell key={row.date_created} align="right">
+                      {String(row.date_created.toDate())}
                     </TableCell>
                   </TableRow>
                 </>

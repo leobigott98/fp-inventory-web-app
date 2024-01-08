@@ -412,8 +412,8 @@ if (docSnap.exists()) {
 }
 
 //Read all documents within the products collection
-export const getProducts = async () => {
-  const q = query(collection(db, "products"), orderBy("name", "asc"));
+export const getCategories = async () => {
+  const q = query(collection(db, "categories"), where("active", "==", true), orderBy("name", "asc"));
   const querySnapshot = await getDocs(q);
 
   const data = [];
