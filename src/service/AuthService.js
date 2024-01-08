@@ -9,9 +9,10 @@ import {
   sendPasswordResetEmail
 } from "firebase/auth";
 import {initialize} from '../config/firebase.config';
-import { doc, setDoc, getFirestore } from "firebase/firestore";
+import { doc, setDoc, getFirestore, Timestamp } from "firebase/firestore";
 
  if(getApps().length === 0){
+  console.log('initializing in auth')
   initialize();
 } 
 
@@ -39,8 +40,10 @@ class AuthService {
     const auth = getAuth();
     const db = getFirestore(getApp);
 
+    console.log(auth)
+
     var actionCodeSettings = {
-      url: 'https://app-inventario.puntogove.com/'
+      url: 'http://localhost:3000'
     };
 
     createUserWithEmailAndPassword(auth, data.email, data.password).then(() => {
@@ -48,12 +51,14 @@ class AuthService {
         // Email verification sent!
         // ...
         setDoc(doc(db, "users", auth.currentUser.uid), {
-          department: event.target.department.value,
+          //department: event.target.department.value,
           email: event.target.email.value,
           lastname: event.target.lastName.value,
           name: event.target.firstName.value,
-          admin: false,
-          title: event.target.jobTitle.value,
+          role: 'viewer',
+          active: true,
+          date_created: Timestamp.now()
+          //title: event.target.jobTitle.value,
         })
           .then((userCredential) => {
             // Signed in
@@ -62,8 +67,7 @@ class AuthService {
             // ...
           })
           .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
+            console.log(error.Message)
             errorFunction();
             // ..
           });
@@ -72,8 +76,7 @@ class AuthService {
     }
       
     ).catch((error) =>{
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      console.log(error.message)
       errorFunction();
     });
 

@@ -15,9 +15,11 @@ const firebaseConfig = {
  export const initialize = () => {
     if(getApps().length === 0){
         const app = initializeApp(firebaseConfig);
+        console.log('initialized succesfully')
         if(typeof window != "undefined"){
             if("measurementId" in firebaseConfig){
                 const analytics = getAnalytics(app);
+                console.log('analytics are running')
     
             }
         }

@@ -27,7 +27,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <a color="inherit" href="https://puntogove.com/" target="_blank" rel="noreferrer">
-        PuntoGo
+        Fastpayment
       </a>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -140,7 +140,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Iniciar Sesión
           </Typography>
           <Box component="form" onSubmit={(e) => handleSubmit(e)} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -151,7 +151,7 @@ export default function SignIn() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Correo Electrónico"
               name="email"
               autoComplete="email"
               pattern="([A-z.]{3,}@tiendapuntogo.com)"
@@ -163,7 +163,7 @@ export default function SignIn() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Contraseña"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -200,7 +200,7 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Iniciar Sesión
             </Button>
             <Grid container>
               <Grid item xs>

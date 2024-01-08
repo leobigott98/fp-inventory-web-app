@@ -35,7 +35,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <a color="inherit" href="https://puntogove.com/" target="_blank" rel="noreferrer">
-        PuntoGo
+        FastPayment
       </a>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -96,17 +96,17 @@ export default function SignUp() {
 
     const name = event.target.firstName.value;
     const lastName = event.target.lastName.value;
-    const jobTitle = event.target.jobTitle.value;
+    //const jobTitle = event.target.jobTitle.value;
     const email = event.target.email.value;
     const password = event.target.password.value;
 
     setValidName(validateInput(name));
     setValidLastName(validateInput(lastName));
-    setValidJob(validateInput(jobTitle));
+    //setValidJob(validateInput(jobTitle));
     setValidEmail(validateEmail(email));
     setValidPassword(validatePassword(password));
 
-    if(validateInput(name) && validateInput(lastName) && validateInput(jobTitle) && validateEmail(email) && validatePassword(password)){
+    if(validateInput(name) && validateInput(lastName) && validateEmail(email) && validatePassword(password)){
       setOpenLoading(true);
       AuthService.handleSignUp(event, function () {printError()});
     }
@@ -138,7 +138,7 @@ export default function SignUp() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign up
+              Registrar Nuevo Usuario
             </Typography>
             <Box
               component="form"
@@ -155,7 +155,7 @@ export default function SignUp() {
                     required
                     fullWidth
                     id="firstName"
-                    label="First Name"
+                    label="Nombre"
                     autoFocus
                     pattern="[A-Za-zÀ-ÖØ-öø-ÿ\s]{3,}"
                     helperText={validName? "": "Debe introducir un nombre válido"}
@@ -167,19 +167,19 @@ export default function SignUp() {
                     required
                     fullWidth
                     id="lastName"
-                    label="Last Name"
+                    label="Apellido"
                     name="lastName"
                     autoComplete="family-name"
                     pattern="[A-Za-zÀ-ÖØ-öø-ÿ\s]{3,}"
                     helperText={validLastName? "" :"Debe introducir un apellido válido"}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                {/* <Grid item xs={12} sm={6}>
                   <FormControl fullWidth required>
-                    <InputLabel>Department</InputLabel>
+                    <InputLabel>Departamento</InputLabel>
                     <Select
                       id="department"
-                      label="Department"
+                      label="Departamento"
                       name="department"
                       required
                       value={department}
@@ -200,19 +200,19 @@ export default function SignUp() {
                     required
                     fullWidth
                     id="jobTitle"
-                    label="Job Title"
+                    label="Cargo"
                     name="jobTitle"
                     pattern="[A-Za-zÀ-ÖØ-öø-ÿ\s]{3,}"
                     helperText={validJob? "" : "Debe introducir un cargo válido"}
                   />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12}>
                   <TextField
                     error = {!validEmail}  
                     required
                     fullWidth
                     id="email"
-                    label="Email Address"
+                    label="Correo Electrónico"
                     name="email"
                     autoComplete="email"
                     pattern="([A-z.]{3,}@tiendapuntogo.com)"
@@ -226,7 +226,7 @@ export default function SignUp() {
                     required
                     fullWidth
                     name="password"
-                    label="Password"
+                    label="Contraseña"
                     type="password"
                     id="password"
                     autoComplete="new-password"
@@ -269,7 +269,7 @@ export default function SignUp() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign Up
+                Registrar
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
