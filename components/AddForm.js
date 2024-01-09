@@ -14,7 +14,7 @@ import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { newProduct, newItem, getLocations, newLocation } from '../src/service/DBService';
+import { newCategory, newItem, getLocations, newLocation } from '../src/service/DBService';
 import { useEffect, useState } from "react";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import Alert from '@mui/material/Alert';
@@ -64,12 +64,12 @@ export default function TransitionsModal(props) {
 
     const [data, setData] = useState(['','']);
 
-    useEffect(() => {
+    /* useEffect(() => {
       async function fetchData() {
         setData(await getLocations());
       }
       fetchData();
-    }, []);
+    }, []); */
 
   const validation = (e)=>{
     
@@ -79,15 +79,15 @@ export default function TransitionsModal(props) {
   const handleSubmit =   (e)=>{
     e.preventDefault();
 
-     if(props.product){
-      newProduct(e, function () {refreshPage()})
+     if(props.categories){
+      newCategory(e, function () {refreshPage()})
      } else newItem(e,props.name, checked, function () {refreshPage()})   
     handleClose()
   }
 
   return (
     <div sx={{mt: 0 }}>
-      <Button onClick={handleOpen} sx={{mt: 0 }} variant="outlined">{props.product ? "Agregar Nueva Categoría" : `Agregar a ${props.name}`}</Button>
+      <Button onClick={handleOpen} sx={{mt: 0 }} variant="outlined">{props.categories ? "Agregar Nueva Categoría" : `Agregar a ${props.name}`}</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -103,7 +103,7 @@ export default function TransitionsModal(props) {
         <Fade in={open}>
           <Box sx={style}>
           <Typography id="transition-modal-title" variant="h6" component="h2">
-              {props.product ? "Nueva Categoría" : `Nuevos ${props.name}`}
+              {props.categories ? "Nueva Categoría" : `Nuevos ${props.name}`}
             </Typography>            
             {/* <Typography id="transition-modal-description" sx={{ mt: 2 }}>
               Duis mollis, est non commodo luctus, nisi erat porttitor ligula.

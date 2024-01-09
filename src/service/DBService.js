@@ -9,21 +9,18 @@ const db = getFirestore(getApp);
 const auth = getAuth();
 
 //Add a new product
-export const newProduct = async (event, callback) => {
+export const newCategory = async (event, callback) => {
   event.preventDefault();
   const data = {
     name: event.target.name.value,
-    user: auth.currentUser.email,
-    timestamp: serverTimestamp(),
+    created_by: doc(db, "users", auth.currentUser.uid),
+    created_by_email: auth.currentUser.email,
+    date_created: serverTimestamp(),
+    number_of_elements: 0,
     active: true,
   };
 
-  await setDoc(doc(db, "products", data.name), {
-    name: data.name,
-    user: data.user,
-    timestamp: data.timestamp,
-    active: data.active,
-  });
+  await addDoc(collection(db, "categories"), data);
 
   callback()
 };
@@ -42,41 +39,6 @@ export const newLocation = async (event, callback) => {
   await addDoc(collection(db, "locations"), data);
 
   callback()
-};
-
-//Add a new Comandera
-export const newComandera = async (event, errorFunction, callback) => {
-  event.preventDefault();
-
-  const data = {
-    SN: event.target.sn.value,
-    //Model: event.target.model.value,
-    Model: 'T1N',
-    IMEI1: event.target.imei.value,
-    IMEI2: event.target.imeii.value,
-    //Estatus: event.target.status.value,
-    Estatus: 'Disponible',
-    //Caja: event.target.caja.value,
-    Caja: '',
-    //Location: event.target.location.value,
-    Location: 'Depósito 1 (Fedur)',
-    Comments: event.target.comments.value,
-    user: auth.currentUser.email,
-    timestamp: serverTimestamp(),
-    active: true,
-  };
-  
-  try{
-    await setDoc(doc(db, "comanderas", data.SN), data)
-  }catch{
-    errorFunction()
-    var error = true;
-  }
-  
-  if(!error){
-    callback();
-  }
-  
 };
 
 //Add a new Item within a product subcollection
@@ -169,58 +131,8 @@ export const assignSerial = async (event, name, lastname, serial, callback) => {
   callback()
 };
 
-
-export const assignComandera = async (event, sn, store, callback) => {
-  event.preventDefault();
-
-  const data = {
-    action: event.target.action.value,
-    user: auth.currentUser.email,
-    timestamp: serverTimestamp(),
-    reason: null,
-    status: null,
-    comments: event.target.comments.value,
-    seller: null,
-    store: null
-  };
-
-  if(data.action === "Disponible"){
-    data.status = data.action
-  }else if(data.action === "Desvincular"){
-    data.reason = event.target.reason.value
-    data.seller = event.target.seller.value
-    data.store = store;
-    if(data.reason === "Avería"){
-      data.status = "Averiada"
-    }else{
-      data.status = "Disponible"
-    }
-  }else if(data.action === "Vincular"){
-    data.status = "Asignada"
-    data.store = event.target.store.value
-    data.seller = event.target.seller.value
-  }else if(data.action === "Averiada"){
-    data.status = "Averiada"
-  }
- await addDoc(collection(db, "comanderas", sn, "history"), data);
-  if(data.action === "Desvincular"){
-    await updateDoc(doc(db, "comanderas", sn,), {
-      Estatus: data.status,
-      Tienda: null
-    });
-  } else {
-    await updateDoc(doc(db, "comanderas", sn,), {
-      Estatus: data.status,
-      Tienda: data.store
-    });
-  } 
-  
-
-  callback()
-};
-
-export const getSeriales = async (lastname, name) => {
-  const q = query(collection(db, "products", lastname, "items", name, "seriales"), orderBy("timestamp", "desc"));
+export const getSeriales = async (category, item) => {
+  const q = query(collection(db, "categories", category, "items", item, "seriales"), orderBy("timestamp", "desc"));
   const querySnapshot = await getDocs(q);
   
 
@@ -235,8 +147,8 @@ export const getSeriales = async (lastname, name) => {
   
 };
 
-export const getAvailableSeriales = async (lastname, name) => {
-  const q = query(collection(db, "products", lastname, "items", name, "seriales"), where("status", "==", "disponible"), orderBy("timestamp", "desc"));
+export const getAvailableSeriales = async (category, item) => {
+  const q = query(collection(db, "categories", category, "items", item, "seriales"), where("status", "==", "disponible"), orderBy("timestamp", "desc"));
   const querySnapshot = await getDocs(q);
   
 
@@ -251,8 +163,8 @@ export const getAvailableSeriales = async (lastname, name) => {
   
 };
 
-export const getSerialInfo = async (lastname, name, serial) => {
-  const docRef = doc(db, "products", lastname, "items", name, "seriales", serial);
+export const getSerialInfo = async (category, item, serial) => {
+  const docRef = doc(db, "categories", category, "items", item, "serials", serial);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -264,8 +176,8 @@ export const getSerialInfo = async (lastname, name, serial) => {
   
 };
 
-export const getSerialHistory = async (lastname, name, serial) => {
-  const q = query(collection(db, "products", lastname, "items", name, "seriales", serial, "history"), orderBy("timestamp", "desc"));
+export const getSerialHistory = async (category, item, serial) => {
+  const q = query(collection(db, "categories", category, "items", item, "serials", serial, "history"), orderBy("timestamp", "desc"));
   const querySnapshot = await getDocs(q);
   
 
@@ -281,41 +193,41 @@ export const getSerialHistory = async (lastname, name, serial) => {
 };
 
 
-export const withdraw = async (event, name, lastname, callback) => {
+export const withdraw = async (event, category, item, callback) => {
   event.preventDefault();
 
   const data = {
     type: "retiro",
     qty: event.target.qty.value * -1,
-    person: event.target.person.value,
-    user: auth.currentUser.email,
+    given_to: event.target.person.value,
+    given_by_user_email: auth.currentUser.email,
     timestamp: serverTimestamp(),
     serial: null,
     observations: event.target.observations.value
   };
 
   if(event.target.seriales.value != null) {
-    data.serial = event.target.seriales.value
+    data.serial = event.target.serials.value
   }
 
-  await addDoc(collection(db, "products", lastname, "items", name, "history"), data);
-  await updateDoc(doc(db, "products", lastname, "items", name), {
-    Quantity: increment(data.qty)
+  await addDoc(collection(db, "categories", category, "items", item, "history"), data);
+  await updateDoc(doc(db, "categories", category, "items", item), {
+    number_of_elements: increment(data.qty)
   });
 
-  if(event.target.seriales.value != null){
+  if(event.target.serials.value != null){
     const Data = {
-      user: auth.currentUser.email,
+      given_by_user_email: auth.currentUser.email,
       timestamp: serverTimestamp(),
       action: 'Asignar',
-      assignedTo: data.person,
+      given_to: data.given_to,
       status: 'asignado',
       location: event.target.location.value
     };
   
-    await addDoc(collection(db, "products", lastname, "items", name, "seriales", data.serial, "history"), Data);
-    await updateDoc(doc(db, "products", lastname, "items", name, "seriales", data.serial), {
-      assignedTo: Data.assignedTo,
+    await addDoc(collection(db, "categories", category, "items", item, "serials", data.serial, "history"), Data);
+    await updateDoc(doc(db, "categories", category, "items", item, "serials", data.serial), {
+      given_to: Data.given_to,
       status: Data.status
     });
   }
@@ -323,67 +235,67 @@ export const withdraw = async (event, name, lastname, callback) => {
   callback()
 };
 
-export const withdrawNS = async (event, name, lastname, callback) => {
+export const withdrawNS = async (event, category, item, callback) => {
   event.preventDefault();
 
   const data = {
     type: "retiro",
     qty: event.target.qty.value * -1,
-    person: event.target.person.value,
-    user: auth.currentUser.email,
+    given_to: event.target.person.value,
+    given_by_user_email: auth.currentUser.email,
     timestamp: serverTimestamp(),
     observations: event.target.observations.value
   };
 
-  await addDoc(collection(db, "products", lastname, "items", name, "history"), data);
-  await updateDoc(doc(db, "products", lastname, "items", name), {
-    Quantity: increment(data.qty)
+  await addDoc(collection(db, "categories", category, "items", item, "history"), data);
+  await updateDoc(doc(db, "categories", category, "items", item), {
+    number_of_elements: increment(data.qty)
   });
 
   callback()
 };
 
-export const replenishNS = async (event, name, lastname, callback) => {
+export const replenishNS = async (event, category, item, callback) => {
   event.preventDefault();
 
   const data = {
     type: "reposición",
     qty: event.target.qty.value,
-    person: event.target.person.value,
-    user: auth.currentUser.email,
+    received_from: event.target.person.value,
+    received_by_user_email: auth.currentUser.email,
     timestamp: serverTimestamp(),
   };
 
-  await addDoc(collection(db, "products", lastname, "items", name, "history"), data);
-  await updateDoc(doc(db, "products", lastname, "items", name), {
-    Quantity: increment(data.qty)
+  await addDoc(collection(db, "categories", category, "items", item, "history"), data);
+  await updateDoc(doc(db, "categories", category, "items", item), {
+    number_of_elements: increment(data.qty)
   });
 
   callback()
 };
 
-export const replenish = async (event, name, lastname, callback) => {
+export const replenish = async (event, category, item, callback) => {
   event.preventDefault();
 
   const data = {
     type: "reposición",
     qty: event.target.qty.value,
-    person: event.target.person.value,
-    user: auth.currentUser.email,
+    received_from: event.target.person.value,
+    received_by_user_email: auth.currentUser.email,
     timestamp: serverTimestamp(),
     serial: event.target.serial.value
   };
 
-  await addDoc(collection(db, "products", lastname, "items", name, "history"), data);
-  await updateDoc(doc(db, "products", lastname, "items", name), {
+  await addDoc(collection(db, "categories", category, "items", item, "history"), data);
+  await updateDoc(doc(db, "categories", category, "items", item), {
     Quantity: increment(data.qty)
   });
 
   callback()
 };
 
-export const getItemHistory = async (lastname, name) => {
-  const q = query(collection(db, "products", lastname, "items", name, "history"), orderBy("timestamp", "desc"));
+export const getItemHistory = async (category, item) => {
+  const q = query(collection(db, "categories", category, "items", item, "history"), orderBy("timestamp", "desc"));
   const querySnapshot = await getDocs(q);
   
 
@@ -398,8 +310,8 @@ export const getItemHistory = async (lastname, name) => {
   
 };
 
-export const getItemInfo = async(category, name) =>{
-  const docRef = doc(db, "products", category, "items", name);
+export const getItemInfo = async(category, item) =>{
+  const docRef = doc(db, "categories", category, "items", item);
   const docSnap = await getDoc(docRef);
 
 if (docSnap.exists()) {
@@ -420,10 +332,19 @@ export const getCategories = async () => {
 
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
-    data.push(doc.data());
+    data.push({
+      id: doc.id,
+      data: doc.data()});
   });
 
   return data;
+};
+
+export const getCategory = async (cid) => {
+  const docRef = doc(db, "categories", cid);
+  const docSnap = await getDoc(docRef);
+
+  return docSnap.data();
 };
 
 export const getLocations = async () => {
@@ -440,89 +361,18 @@ export const getLocations = async () => {
   return data;
 };
 
-export const getStores = async () => {
-  const q = query(collection(db, "stores"), orderBy("name", "desc"));
+export const getItems = async(cid) =>{
+  const q = query(collection(db, "categories", cid, "items"), orderBy("name", "asc"));
   const querySnapshot = await getDocs(q);
 
   const data = [];
 
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
-    data.push(doc.data());
+    data.push({
+      id: doc.id,
+      data: doc.data()});
   });
-
-  return data;
-};
-
-export const getSellers = async () => {
-  const q = query(collection(db, "sellers"), orderBy("name", "desc"));
-  const querySnapshot = await getDocs(q);
-
-  const data = [];
-
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    data.push(doc.data());
-  });
-
-  return data;
-};
-
-export const getComanderas = async () => {
-  const q = query(collection(db, "comanderas"), orderBy("timestamp", "desc"));
-  const querySnapshot = await getDocs(q);
-
-  const data = [];
-
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    data.push(doc.data());
-  });
-
-  return data;
-};
-
-export const getComanderaInfo = async (sn) => {
-  const docRef = doc(db, "comanderas", sn)
-  const docSnap = await getDoc(docRef);
-  const status = docSnap.data().Estatus;
-  const store = docSnap.data().Tienda;
-
-  if (docSnap.exists()) {
-    console.log(status);
-    return [status, store];
-  } else {
-    // docSnap.data() will be undefined in this case
-    console.log("No such document!");
-  }
-  
-};
-
-export const getComanderaHistory = async (sn) => {
-  const q = query(collection(db, "comanderas", sn, "history"), orderBy("timestamp", "desc"));
-  const querySnapshot = await getDocs(q);
-
-  const data = [];
-
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    data.push(doc.data());
-  });
-
- return data
-};
-
-export const getItems = async(name) =>{
-  const q = query(collection(db, "products", name, "items"), orderBy("name", "asc"));
-  const querySnapshot = await getDocs(q);
-
-  const data = [];
-
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    data.push(doc.data());
-  });
-  console.log(data)
 
  return data
   
@@ -538,25 +388,6 @@ if (docSnap.exists()) {
   // doc.data() will be undefined in this case
   console.log("No such document!");
 }
-
-//   const docRef = doc(db, "users", uid);
-//   const docSnap = await getDoc(docRef);
-//   const data = [];
-
-//   // docSnap.forEach((attribute) =>{
-//   //   data.push(attribute.data());
-//   // });  
-
-//  return docSnap.data
-
-}
-
-export const updateItem = async(event, category, id) =>{
-  const itemRef = doc(db, category, id);
-
-  await updateDoc(itemRef, {
-    capital: true
-  });
 
 }
 

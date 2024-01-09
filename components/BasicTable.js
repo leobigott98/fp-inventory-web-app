@@ -14,7 +14,7 @@ import {
   getComanderaHistory,
   getItems,
   getItemHistory,
-  getItemInfo,
+  //getItemInfo,
   getSeriales,
   getSerialHistory
 } from "../src/service/DBService";
@@ -50,12 +50,12 @@ export default function BasicTable(props) {
       } else if (props.assignments) {
         setRows(await getComanderaHistory(props.sn));
       } else if (props.item) {
-        setRows(await getItems(props.name));
+        setRows(await getItems(props.cid));
       } else if (props.itemHistory) {
         setRows(await getItemHistory(props.lastname, props.name));
-      } else if (props.itemInfo) {
+      } /* else if (props.itemInfo) {
         setRows(await getItemInfo(props.lastname, props.name));
-      } else if (props.seriales) {
+      } */ else if (props.seriales) {
         setRows(await getSeriales(props.lastname, props.name));
       } else if (props.serialHistory){
         setRows(await getSerialHistory(props.category, props.product, props.serial))
@@ -121,7 +121,7 @@ export default function BasicTable(props) {
                   <TableCell align="right">Cantidad</TableCell>
                   <TableCell align="right">Unidades</TableCell>
                   <TableCell align="center">Acción</TableCell>
-                  <TableCell align="center">Acciones</TableCell>
+                  <TableCell align="center">Detalle</TableCell>
                 </>
               ) : props.seriales ? (
                 <>
@@ -160,22 +160,22 @@ export default function BasicTable(props) {
                 <>
                   <TableRow
                     hover
-                    key={row.name}
+                    key={row.data.name}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     onClick={() => {
                       //setProductName(row.name);
-                      //console.log(row.name.replace(/ /g,''))
-                      router.push(`/category/${row.name}`);
+                      //console.log(rows)
+                      router.push(`/category/${row.id}`);
                     }}
                   >
-                    <TableCell key={row.name} component="th" scope="row">
-                      {row.name}
+                    <TableCell key={row.data.name} component="th" scope="row">
+                      {row.data.name}
                     </TableCell>
-                    <TableCell key={row.number_of_elements} align="right">
-                      {String(row.number_of_elements)}
+                    <TableCell key={row.data.number_of_elements} align="right">
+                      {String(row.data.number_of_elements)}
                     </TableCell>
-                    <TableCell key={row.date_created} align="right">
-                      {String(row.date_created.toDate())}
+                    <TableCell key={row.data.date_created} align="right">
+                      {String(row.data.date_created.toDate())}
                     </TableCell>
                   </TableRow>
                 </>
@@ -277,15 +277,15 @@ export default function BasicTable(props) {
               ) : props.item ? (
                 <>
                   <TableRow
-                    key={row.name}
+                    key={row.data.name}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell align="left" sx={{ margin: 0, paddingRight: 0 }}>
-                      {row.name}
+                      {row.data.name}
                     </TableCell>
-                    <TableCell align="right">{row.Location}</TableCell>
-                    <TableCell align="right">{row.Quantity}</TableCell>
-                    <TableCell align="right">{row.Unit}</TableCell>
+                    <TableCell align="right">{row.data.location}</TableCell>
+                    <TableCell align="right">{row.data.number_of_elements}</TableCell>
+                    <TableCell align="right">{row.data.units_of_measurement}</TableCell>
                     <TableCell
                       align="right"
                       sx={{
@@ -298,16 +298,16 @@ export default function BasicTable(props) {
                     >
                       <Stack direction="row" spacing={1}>
                         <AssignForm
-                          disabled={row.Quantity == 0 ? true : false}
+                          disabled={row.data.number_of_elements == 0 ? true : false}
                           retirar
-                          name={row.name}
-                          productName={props.name}
+                          item={row.id}
+                          category={props.cid}
                           product
                         />
                         <AssignForm
                           reponer
-                          name={row.name}
-                          productName={props.name}
+                          item={row.id}
+                          category={props.cid}
                           product
                         />
                       </Stack>
@@ -315,8 +315,8 @@ export default function BasicTable(props) {
                       {/* <AssignForm editar name={row.name} productName={props.name}/> */}
                     </TableCell>
                     <TableCell align="right" sx={{ padding: 0, margin: 0 }}>
-                      <Stack direction="row" spacing={1}>
-                        <ItemInfo name={row.name} category={props.name} />
+                      {/* <Stack direction="row" spacing={1}>
+                        <ItemInfo name={row.data.name} category={props.name} />
                         <Button
                           onClick={() => {
                             router.push(`${props.name}/${row.name}`);
@@ -337,7 +337,7 @@ export default function BasicTable(props) {
                         >
                           <ListIcon />
                         </Button>
-                      </Stack>
+                      </Stack> */}
                     </TableCell>
                   </TableRow>
                 </>

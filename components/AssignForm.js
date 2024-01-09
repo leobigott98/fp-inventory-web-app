@@ -47,7 +47,7 @@ export default function TransitionsModal(props) {
 
   const [value, setValue] = React.useState(null);
 
-  const [data, setData] = React.useState(null);
+  const [locations, setLocations] = React.useState(null);
 
   const [stores, setStores] = React.useState(null);
 
@@ -77,14 +77,14 @@ export default function TransitionsModal(props) {
         if(props.comandera){
         setStores(await getStores());
         setSellers(await getSellers());
-        setData(await getLocations());
+        setLocations(await getLocations());
         if(props.sn){
           setComanderaInfo(await getComanderaInfo(props.sn));
         }
       } else {
-        setItemIfo(await getItemInfo(props.productName, props.name));
-        setSeriales(await getAvailableSeriales(props.productName, props.name));
-        setData(await getLocations());
+        setItemIfo(await getItemInfo(props.category, props.item));
+        //setSeriales(await getAvailableSeriales(props.category, props.item));
+        setLocations(await getLocations());
       }
     }
     fetchData();
@@ -138,9 +138,9 @@ export default function TransitionsModal(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     {props.comandera? await assignComandera(e, props.sn, comanderaInfo[1], function () {refreshPage()}): 
-    props.retirar? itemInfo.seriales? await withdraw(e, props.name, props.productName, function () {refreshPage()}):
+    props.retirar? itemInfo.serials? await withdraw(e, props.name, props.productName, function () {refreshPage()}):
     await withdrawNS(e, props.name, props.productName, function () {refreshPage()}) :
-    props.reponer? itemInfo.seriales? await replenish(e, props.name, props.productName, function () {refreshPage()}):
+    props.reponer? itemInfo.serials? await replenish(e, props.name, props.productName, function () {refreshPage()}):
     await replenishNS(e, props.name, props.productName, function () {refreshPage()}):
     await assignComandera(e, props.sn, function () {refreshPage()})}
     
@@ -174,7 +174,7 @@ export default function TransitionsModal(props) {
         <Fade in={open}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              {props.comandera? `Nueva Asignación de la Comandera ${props.sn}` : props.retirar? `Retiro de ${props.name}` : props.reponer? `Reposición de ${props.name}`: `Edición de ${props.name}`}
+              {props.comandera? `Nueva Asignación de la Comandera ${props.sn}` : props.retirar? `Retiro de ${props.item}` : props.reponer? `Reposición de ${props.item}`: `Edición de ${props.item}`}
             </Typography>
 
             <ThemeProvider theme={theme}>
@@ -218,16 +218,16 @@ export default function TransitionsModal(props) {
                           pattern="[A-z0-9]"
                         />
                       </Grid>
-                      {itemInfo.seriales? 
+                      {itemInfo.serials? 
                       <>
-                      {seriales?
+                      {serials?
                       <>
                         <Grid item xs={12}>
                         <FormControl fullWidth required>
                         <Autocomplete
                           disablePortal
                           id="seriales"
-                          options={seriales.map((option) => option.serial)}
+                          options={serials.map((option) => option.serial)}
                           //sx={{ width: 300 }}
                           renderInput={(params) => <TextField {...params} label="Serial" />}
                           required
@@ -390,7 +390,7 @@ export default function TransitionsModal(props) {
                           pattern="[A-z0-9]"
                         />
                       </Grid>
-                      {itemInfo?.seriales?
+                      {itemInfo?.serials?
                         <Grid item xs={12}>
                           <TextField
                             name="serial"

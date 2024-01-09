@@ -6,9 +6,21 @@ import BasicTable from '../components/BasicTable'
 import AddForm from "../components/AddForm"
 import Head from "next/head";
 import Stack from '@mui/material/Stack'
-
+import { getUserData } from '../src/service/DBService'
+import { getAuth } from 'firebase/auth'
+import { useState, useEffect } from 'react'
 
 function Home() {
+  const [userData, setUserData] = useState(null);
+  const auth = getAuth();
+
+  useEffect(() => {  
+    async function fetchData() {
+      setUserData(await getUserData(auth.currentUser.uid));
+    }
+    
+    fetchData();
+  }, []);
 
   return (
     <Layout>
@@ -16,7 +28,10 @@ function Home() {
       <title>Inventario</title>
       </Head>
     <Stack spacing={2} direction="row">
-   {/*  <AddForm product/>  */}
+    {userData? 
+      userData.role == "editor" ? <>
+      <AddForm categories/>
+    </> : <></>: <></>}
     </Stack>
     
     <BasicTable categories/>
