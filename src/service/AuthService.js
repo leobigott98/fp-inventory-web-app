@@ -43,7 +43,7 @@ class AuthService {
     console.log(auth)
 
     var actionCodeSettings = {
-      url: 'http://localhost:3000'
+      url: 'https://fp-inventory-web-app.vercel.app/'
     };
 
     createUserWithEmailAndPassword(auth, data.email, data.password).then(() => {
