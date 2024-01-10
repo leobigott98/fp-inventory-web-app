@@ -42,39 +42,41 @@ export const newLocation = async (event, callback) => {
 };
 
 //Add a new Item within a product subcollection
-export const newItem = async (event, name, checked, callback) => {
+export const newItem = async (event, category, checked, callback) => {
   event.preventDefault();
 
   const data = {
-    user: auth.currentUser.email,
+    created_by: doc(db, "users", auth.currentUser.uid),
+    created_by_email: auth.currentUser.email,
     name: event.target.name.value,
-    timestamp: serverTimestamp(),
-    Location: event.target.location.value,
-    Comments: event.target.comments.value,
-    Quantity: Number(event.target.qty.value),
-    Unit: event.target.unit.value,
-    Specs: event.target.specs.value,
-    //Status: event.target.status.value,
+    date_created: serverTimestamp(),
+    location: event.target.location.value,
+    comments: event.target.comments.value,
+    number_of_elements: Number(event.target.qty.value),
+    units_of_measurement: event.target.unit.value,
+    specs: event.target.specs.value,
     active: true,
-    seriales: checked
+    serials: checked
   };
 
-  await setDoc(doc(db, "products", name, "items", data.name), data);
+  await addDoc(doc(db, "categories", category, "items"), data);
 
   callback()
 };
 
-export const newSerial = async (event, name, lastname, callback) => {
+export const newSerial = async (event, category, item, callback) => {
   event.preventDefault();
 
   const serial = event.target.serial.value
 
   const data = {
-    user: auth.currentUser.email,
+    created_by: doc(db, "users", auth.currentUser.uid),
+    created_by_email: auth.currentUser.email,
     serial: serial.toUpperCase(),
-    timestamp: serverTimestamp(),
+    date_created: serverTimestamp(),
     status: 'disponible',
-    assignedTo: '',
+    assigned_to: '',
+    received_from: '',
     comments: null
   };
 
@@ -82,19 +84,20 @@ export const newSerial = async (event, name, lastname, callback) => {
     data.comments = event.target.comments.value;
   }
 
-  await setDoc(doc(db, "products", lastname, "items", name, "seriales", data.serial), data);
+  await setDoc(doc(db, "categories", category, "items", item, "serials", data.serial), data);
 
   callback()
 };
 
-export const assignSerial = async (event, name, lastname, serial, callback) => {
+/* export const assignSerial = async (event, category, item, serial, callback) => {
   event.preventDefault();
 
   const data = {
-    user: auth.currentUser.email,
+    assigned_by: doc(db, "users", auth.currentUser.uid),
+    assigned_by_user: auth.currentUser.email,
     timestamp: serverTimestamp(),
     action: event.target.action.value,
-    assignedTo: null,
+    assigned_to: null,
     status: null,
     location: event.target.location.value,
   };
@@ -129,7 +132,7 @@ export const assignSerial = async (event, name, lastname, serial, callback) => {
   });
 
   callback()
-};
+}; */
 
 export const getSeriales = async (category, item) => {
   const q = query(collection(db, "categories", category, "items", item, "seriales"), orderBy("timestamp", "desc"));
@@ -147,7 +150,7 @@ export const getSeriales = async (category, item) => {
   
 };
 
-export const getAvailableSeriales = async (category, item) => {
+export const getAvailableSerials = async (category, item) => {
   const q = query(collection(db, "categories", category, "items", item, "seriales"), where("status", "==", "disponible"), orderBy("timestamp", "desc"));
   const querySnapshot = await getDocs(q);
   

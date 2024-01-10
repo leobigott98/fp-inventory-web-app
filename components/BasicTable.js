@@ -45,8 +45,6 @@ export default function BasicTable(props) {
     async function fetchData() {
       if (props.categories) {
         setRows(await getCategories());
-      } else if (props.comanderas) {
-        setRows(await getComanderas());
       } else if (props.assignments) {
         setRows(await getComanderaHistory(props.sn));
       } else if (props.item) {
@@ -64,7 +62,6 @@ export default function BasicTable(props) {
     fetchData();
   }, [
     props.categories,
-    props.comanderas,
     props.assignments,
     props.item,
     props.itemHistory,
@@ -85,15 +82,6 @@ export default function BasicTable(props) {
                   <TableCell>Nombre de la categoría</TableCell>
                   <TableCell align="right">Número de elementos</TableCell>
                   <TableCell align="right">Fecha de Creación</TableCell>
-                </>
-              ) : props.comanderas ? (
-                <>
-                  <TableCell>SN</TableCell>
-                  <TableCell align="right">Modelo</TableCell>
-                  <TableCell align="right">IMEI1</TableCell>
-                  <TableCell align="right">IMEI2</TableCell>
-                  <TableCell align="right">Estatus</TableCell>
-                  <TableCell align="right">Ubicación</TableCell>
                 </>
               ) : props.assignments ? (
                 <>
@@ -176,36 +164,6 @@ export default function BasicTable(props) {
                     </TableCell>
                     <TableCell key={row.data.date_created} align="right">
                       {String(row.data.date_created.toDate())}
-                    </TableCell>
-                  </TableRow>
-                </>
-              ) : props.comanderas ? (
-                <>
-                  <TableRow
-                    hover
-                    key={row.sn}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    onClick={() => {
-                      router.push(`/comandera/${row.SN}`);
-                    }}
-                  >
-                    <TableCell key={row.SN} component="th" scope="row">
-                      {row.SN}
-                    </TableCell>
-                    <TableCell key={row.Model} align="right">
-                      {row.Model}
-                    </TableCell>
-                    <TableCell key={row.IMEI1} align="right">
-                      {row.IMEI1}
-                    </TableCell>
-                    <TableCell key={row.IMEI2} align="right">
-                      {row.IMEI2}
-                    </TableCell>
-                    <TableCell key={row.Estatus} align="right">
-                      {row.Estatus}
-                    </TableCell>
-                    <TableCell key={row.Location} align="right">
-                      {row.Location}
                     </TableCell>
                   </TableRow>
                 </>
