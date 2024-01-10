@@ -78,7 +78,7 @@ export default function BasicTable(props) {
   }
 
   useEffect(()=>{
-    if(rows){
+    if(rows && rows.length > 0){
       if(rows[0].data != null){
       setData(fill)
     } 
@@ -402,7 +402,8 @@ export default function BasicTable(props) {
         </Table>
       </TableContainer>
       {rows ? 
-        rows[0].data? (
+        rows.length > 0 ?
+        rows[0].data != null? (
         <CSVLink data={data} filename={"inventario-info.csv"}>
           DESCARGAR DATOS
         </CSVLink>
@@ -410,7 +411,7 @@ export default function BasicTable(props) {
         <CSVLink data={rows} filename={"inventario-info.csv"}>
           DESCARGAR DATOS
         </CSVLink>
-      ) : <></>}
+      ) : <></> : <></>}
     </>
   );
 }
