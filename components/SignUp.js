@@ -79,7 +79,7 @@ export default function SignUp() {
 
   const validateEmail = (input) => {
     //const pattern = /([A-z.]{3,}@tiendapuntogo.com)/;
-    const pattern = /([A-z.]{3,}@gmail.com)|([A-z.]{3,}@tiendapuntogo.com) |([A-z.]{3,}@fastpayment.com.ve) |([A-z.]{3,}@puntogove.com)/;
+    const pattern = /([A-z.]{3,}@fastpayment.com.ve)/;
     let valid = pattern.test(input);
     return valid;
   };
@@ -215,9 +215,9 @@ export default function SignUp() {
                     label="Correo Electrónico"
                     name="email"
                     autoComplete="email"
-                    pattern="([A-z.]{3,}@tiendapuntogo.com)"
-                    title="Correo @tiendapuntogo.com válido"
-                    helperText={validEmail? "" : "Debe introducir un correo puntogo válido"}
+                    //pattern="([A-z.]{3,}@tiendapuntogo.com)"
+                    title="Correo @fastpayment.com.ve válido"
+                    helperText={validEmail? "" : "Debe introducir un correo fastpayment válido"}
                   />
                 </Grid>
                 <Grid item xs={12}>

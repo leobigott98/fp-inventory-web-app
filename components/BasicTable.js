@@ -39,6 +39,7 @@ export default function BasicTable(props) {
   const router = useRouter();
 
   const [rows, setRows] = useState(null);
+  const [data, setData] = useState([]);
   //const [productName, setProductName] = useState(null);
 
   useEffect(() => {
@@ -67,6 +68,22 @@ export default function BasicTable(props) {
     props.category,
     props.serials,
   ]);
+
+  const fill = ()=>{
+    const info = [];
+    rows.forEach(row => {
+      info.push(row.data)
+    });
+    return info;
+  }
+
+  useEffect(()=>{
+    if(rows){
+      if(rows[0].data != null){
+      setData(fill)
+    } 
+  
+  }}, [rows]);
 
   return (
     <>
@@ -384,13 +401,16 @@ export default function BasicTable(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      {rows ? (
-        <CSVLink data={rows} filename={"inventario-info.csv"}>
+      {rows ? 
+        rows[0].data? (
+        <CSVLink data={data} filename={"inventario-info.csv"}>
           DESCARGAR DATOS
         </CSVLink>
       ) : (
-        <></>
-      )}
+        <CSVLink data={rows} filename={"inventario-info.csv"}>
+          DESCARGAR DATOS
+        </CSVLink>
+      ) : <></>}
     </>
   );
 }

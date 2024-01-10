@@ -76,7 +76,7 @@ export default function SignIn() {
 
   const validateEmail = (input) => {
     //const pattern = /([A-z.]{3,}@tiendapuntogo.com)/;
-    const pattern = /([A-z.]{3,}@gmail.com)|([A-z.]{3,}@tiendapuntogo.com)/
+    const pattern = /([A-z.]{3,}@fastpayment.com.ve)/
     let valid = pattern.test(input);
     return valid;
   };
@@ -155,8 +155,8 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               pattern="([A-z.]{3,}@tiendapuntogo.com)"
-              title="Correo @tiendapuntogo.com válido"
-              helperText={validEmail? "" : "Debe introducir un correo puntogo válido"}
+              title="Correo @fastpayment.com.ve válido"
+              helperText={validEmail? "" : "Debe introducir un correo fastpayment válido"}
             />
             <TextField
               margin="normal"
