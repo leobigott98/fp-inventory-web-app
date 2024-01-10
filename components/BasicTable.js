@@ -15,7 +15,7 @@ import {
   getItems,
   getItemHistory,
   //getItemInfo,
-  getSeriales,
+  getSerials,
   getSerialHistory
 } from "../src/service/DBService";
 import { useEffect, useState } from "react";
@@ -45,29 +45,27 @@ export default function BasicTable(props) {
     async function fetchData() {
       if (props.categories) {
         setRows(await getCategories());
-      } else if (props.assignments) {
+      } /* else if (props.assignments) {
         setRows(await getComanderaHistory(props.sn));
-      } else if (props.item) {
+      }  */else if (props.item) {
         setRows(await getItems(props.cid));
       } else if (props.itemHistory) {
-        setRows(await getItemHistory(props.lastname, props.name));
-      } /* else if (props.itemInfo) {
-        setRows(await getItemInfo(props.lastname, props.name));
-      } */ else if (props.seriales) {
-        setRows(await getSeriales(props.lastname, props.name));
+        setRows(await getItemHistory(props.category, props.itemId));
+      } else if (props.itemInfo) {
+        setRows(await getItemInfo(props.category, props.item));
+      } else if (props.seriales) {
+        setRows(await getSerials(props.category, props.itemId));
       } else if (props.serialHistory){
-        setRows(await getSerialHistory(props.category, props.product, props.serial))
+        setRows(await getSerialHistory(props.category, props.itemId, props.serial))
       }
     }
     fetchData();
   }, [
     props.categories,
-    props.assignments,
     props.item,
     props.itemHistory,
-    props.sn,
-    props.name,
-    props.lastname,
+    props.category,
+    props.serial,
   ]);
 
   return (
@@ -82,16 +80,6 @@ export default function BasicTable(props) {
                   <TableCell>Nombre de la categoría</TableCell>
                   <TableCell align="right">Número de elementos</TableCell>
                   <TableCell align="right">Fecha de Creación</TableCell>
-                </>
-              ) : props.assignments ? (
-                <>
-                  <TableCell>Fecha</TableCell>
-                  <TableCell align="right">Acción</TableCell>
-                  <TableCell align="right">Motivo</TableCell>
-                  <TableCell align="right">Comercio</TableCell>
-                  <TableCell align="right">Ejecutivo</TableCell>
-                  <TableCell align="right">Observaciones</TableCell>
-                  <TableCell align="right">Usuario</TableCell>
                 </>
               ) : props.itemHistory ? (
                 <>
@@ -167,38 +155,6 @@ export default function BasicTable(props) {
                     </TableCell>
                   </TableRow>
                 </>
-              ) : props.assignments ? (
-                <>
-                  <TableRow
-                    key={row.timestamp}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    // onClick={() => {
-                    //   router.push(`/comandera/${row.SN}`);
-                    // }}
-                  >
-                    <TableCell
-                      key={row.timestamp}
-                      align="left"
-                      sx={{ margin: 0, paddingRight: 0 }}
-                    >
-                      {String(row.timestamp.toDate())}
-                    </TableCell>
-                    <TableCell align="right">{row.action}</TableCell>
-                    <TableCell align="right">
-                      {row.reason ? row.reason : "-"}
-                    </TableCell>
-                    <TableCell align="right">
-                      {row.store ? row.store : "-"}
-                    </TableCell>
-                    <TableCell align="right">
-                      {row.seller ? row.seller : "-"}
-                    </TableCell>
-                    <TableCell align="right">
-                      {row.comments ? row.comments : "-"}
-                    </TableCell>
-                    <TableCell align="right">{row.user}</TableCell>
-                  </TableRow>
-                </>
               ) : props.itemHistory ? (
                 <>
                   <TableRow
@@ -215,20 +171,22 @@ export default function BasicTable(props) {
                     >
                       {String(row.timestamp.toDate())}
                     </TableCell>
-                    <TableCell key={row.serial} align="left">
-                      {row.serial}
-                    </TableCell>
+                    {row.serial?
+                      <TableCell key={row.serial} align="left">{row.serial}</TableCell> : 
+                      <TableCell key={row.serial} align="left">n/a</TableCell>
+                    }
+                    
                     <TableCell key={row.type} align="right">
                       {row.type}
                     </TableCell>
                     <TableCell key={row.qty} align="right">
                       {row.qty}
                     </TableCell>
-                    <TableCell key={row.person} align="right">
-                      {row.person}
+                    <TableCell key={row.givenTo_or_receivedFrom} align="right">
+                      {row.givenTo_or_receivedFrom}
                     </TableCell>
-                    <TableCell key={row.user} align="right">
-                      {row.user}
+                    <TableCell key={row.user_email} align="right">
+                      {row.user_email}
                     </TableCell>
                   </TableRow>
                 </>
@@ -275,16 +233,16 @@ export default function BasicTable(props) {
                       {/* <AssignForm editar name={row.name} productName={props.name}/> */}
                     </TableCell>
                     <TableCell align="right" sx={{ padding: 0, margin: 0 }}>
-                      {/* <Stack direction="row" spacing={1}>
-                        <ItemInfo name={row.data.name} category={props.name} />
+                      <Stack direction="row" spacing={1}>
+                        <ItemInfo name={row.data.name} category={props.cid} item={row.id}/>
                         <Button
                           onClick={() => {
-                            router.push(`${props.name}/${row.name}`);
+                            router.push(`${props.cid}/${row.id}`);
                           }}
                         >
                           <HistoryIcon />
                         </Button>
-                        <AddItemForm
+                        {/* <AddItemForm
                           seriales={row.seriales}
                           name={row.name}
                           lastname={props.name}
@@ -296,8 +254,8 @@ export default function BasicTable(props) {
                           }}
                         >
                           <ListIcon />
-                        </Button>
-                      </Stack> */}
+                        </Button> */}
+                      </Stack>
                     </TableCell>
                   </TableRow>
                 </>

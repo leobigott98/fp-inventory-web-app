@@ -134,7 +134,7 @@ export const newSerial = async (event, category, item, callback) => {
   callback()
 }; */
 
-export const getSeriales = async (category, item) => {
+export const getSerials = async (category, item) => {
   const q = query(collection(db, "categories", category, "items", item, "seriales"), orderBy("timestamp", "desc"));
   const querySnapshot = await getDocs(q);
   
@@ -202,8 +202,8 @@ export const withdraw = async (event, category, item, callback) => {
   const data = {
     type: "retiro",
     qty: event.target.qty.value * -1,
-    given_to: event.target.person.value,
-    given_by_user_email: auth.currentUser.email,
+    givenTo_or_receivedFrom: event.target.person.value,
+    user_email: auth.currentUser.email,
     timestamp: serverTimestamp(),
     serial: null,
     observations: event.target.observations.value
@@ -220,10 +220,10 @@ export const withdraw = async (event, category, item, callback) => {
 
   if(event.target.serials.value != null){
     const Data = {
-      given_by_user_email: auth.currentUser.email,
+      user_email: auth.currentUser.email,
       timestamp: serverTimestamp(),
       action: 'Asignar',
-      given_to: data.given_to,
+      givenTo_or_receivedFrom: data.given_to,
       status: 'asignado',
       location: event.target.location.value
     };
@@ -244,8 +244,8 @@ export const withdrawNS = async (event, category, item, callback) => {
   const data = {
     type: "retiro",
     qty: event.target.qty.value * -1,
-    given_to: event.target.person.value,
-    given_by_user_email: auth.currentUser.email,
+    givenTo_or_receivedFrom: event.target.person.value,
+    user_email: auth.currentUser.email,
     timestamp: serverTimestamp(),
     observations: event.target.observations.value
   };
@@ -264,8 +264,8 @@ export const replenishNS = async (event, category, item, callback) => {
   const data = {
     type: "reposición",
     qty: event.target.qty.value,
-    received_from: event.target.person.value,
-    received_by_user_email: auth.currentUser.email,
+    givenTo_or_receivedFrom: event.target.person.value,
+    user_email: auth.currentUser.email,
     timestamp: serverTimestamp(),
   };
 
@@ -283,8 +283,8 @@ export const replenish = async (event, category, item, callback) => {
   const data = {
     type: "reposición",
     qty: event.target.qty.value,
-    received_from: event.target.person.value,
-    received_by_user_email: auth.currentUser.email,
+    givenTo_or_receivedFrom: event.target.person.value,
+    user_email: auth.currentUser.email,
     timestamp: serverTimestamp(),
     serial: event.target.serial.value
   };

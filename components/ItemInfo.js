@@ -29,11 +29,11 @@ export default function BasicModal(props) {
   React.useEffect(() => {  
     async function fetchData(){
       {
-        setSpecs(await getItemInfo(props.category, props.name))
+        setSpecs(await getItemInfo(props.category, props.item))
       }
     }
     fetchData();
-  }, [props.category, props.name]);
+  }, [props.category, props.item]);
 
   return (
     <div>
@@ -51,9 +51,12 @@ export default function BasicModal(props) {
           <Typography variant='h5'>{props.name}</Typography>
           <Stack direction="row" spacing={2}>
             <Typography variant='h6'>Specs:</Typography>
-            <Typography variant='body'>{specs?.Specs}</Typography>
+            <Typography variant='body'>{specs?.specs}</Typography>
           </Stack>
-          <Typography variant='body'>{specs?.observations}</Typography>
+          <Stack direction="row" spacing={2}>
+            <Typography variant='h6'>Comments:</Typography>
+            <Typography variant='body'>{specs?.comments}</Typography>
+          </Stack>
         </Stack>
           
           
