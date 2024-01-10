@@ -53,7 +53,7 @@ export default function BasicTable(props) {
         setRows(await getItemHistory(props.category, props.itemId));
       } else if (props.itemInfo) {
         setRows(await getItemInfo(props.category, props.item));
-      } else if (props.seriales) {
+      } else if (props.serials) {
         setRows(await getSerials(props.category, props.itemId));
       } else if (props.serialHistory){
         setRows(await getSerialHistory(props.category, props.itemId, props.serial))
@@ -65,7 +65,7 @@ export default function BasicTable(props) {
     props.item,
     props.itemHistory,
     props.category,
-    props.serial,
+    props.serials,
   ]);
 
   return (
@@ -99,7 +99,7 @@ export default function BasicTable(props) {
                   <TableCell align="center">Acción</TableCell>
                   <TableCell align="center">Detalle</TableCell>
                 </>
-              ) : props.seriales ? (
+              ) : props.serials ? (
                 <>
                   <TableCell>Serial</TableCell>
                   <TableCell align="right">Estatus</TableCell>
@@ -242,27 +242,28 @@ export default function BasicTable(props) {
                         >
                           <HistoryIcon />
                         </Button>
-                        {/* <AddItemForm
-                          seriales={row.seriales}
-                          name={row.name}
-                          lastname={props.name}
-                          disabled = {row.Quantity == 0 ? true : false}
+                        <AddItemForm
+                          serials={row.data.serials}
+                          category={props.cid}
+                          item={row.id}
+                          disabled = {row.data.number_of_elements == 0 ? true : false}
                         />
                         <Button
                           onClick={() => {
-                            router.push(`${props.name}/${row.name}/serial`);
+                            router.push(`${props.cid}/${row.id}/serial`);
                           }}
+                          disabled = {row.data.serials ? false : true}
                         >
                           <ListIcon />
-                        </Button> */}
+                        </Button>
                       </Stack>
                     </TableCell>
                   </TableRow>
                 </>
-              ) : props.seriales ? (
+              ) : props.serials ? (
                 <>
                   <TableRow
-                    key={row.timestamp}
+                    key={row.date_created}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     // onClick={() => {
                     //   router.push(`/comandera/${row.SN}`);
@@ -275,15 +276,15 @@ export default function BasicTable(props) {
                       {row.status}
                     </TableCell>
                     <TableCell key={row.serial} align="right">
-                      {String(row.timestamp.toDate())}
+                      {String(row.date_created.toDate())}
                     </TableCell>
                     <TableCell key={row.serial} align="right">
-                      {row.assignedTo ? row.assignedTo : "-"}
+                      {row.assigned_to ? row.assigned_to : "-"}
                     </TableCell>
                     <TableCell key={row.serial} align="right">
-                      {row.user}
+                      {row.created_by_email}
                     </TableCell>
-                    <TableCell key={row.serial} align="right">
+                    {/* <TableCell key={row.serial} align="right">
                       <Stack direction="row">
                         <Button onClick={()=>{
                           router.push(`/category/${props.lastname}/${props.name}/serial/${row.serial}`)
@@ -293,7 +294,7 @@ export default function BasicTable(props) {
                         </Button>
                         <ManageItem name={props.name} lastname={props.lastname} serial={row.serial}/>
                       </Stack>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 </>
               ) : props.serialHistory? (<>

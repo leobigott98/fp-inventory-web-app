@@ -39,14 +39,14 @@ export default function TransitionsModal(props) {
     
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await newSerial(e, props.name, props.lastname, refreshPage)
+    await newSerial(e, props.category, props.item, refreshPage)
     
     handleClose();
   };
 
   return (
     <div>
-      <Button onClick={handleOpen}  disabled={!props.seriales || props.disabled}><AddIcon/></Button>
+      <Button onClick={handleOpen}  disabled={!props.serials || props.disabled}><AddIcon/></Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

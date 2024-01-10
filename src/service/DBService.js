@@ -76,7 +76,6 @@ export const newSerial = async (event, category, item, callback) => {
     date_created: serverTimestamp(),
     status: 'disponible',
     assigned_to: '',
-    received_from: '',
     comments: null
   };
 
@@ -135,7 +134,7 @@ export const newSerial = async (event, category, item, callback) => {
 }; */
 
 export const getSerials = async (category, item) => {
-  const q = query(collection(db, "categories", category, "items", item, "seriales"), orderBy("timestamp", "desc"));
+  const q = query(collection(db, "categories", category, "items", item, "serials"), orderBy("date_created", "desc"));
   const querySnapshot = await getDocs(q);
   
 
@@ -151,7 +150,7 @@ export const getSerials = async (category, item) => {
 };
 
 export const getAvailableSerials = async (category, item) => {
-  const q = query(collection(db, "categories", category, "items", item, "seriales"), where("status", "==", "disponible"), orderBy("timestamp", "desc"));
+  const q = query(collection(db, "categories", category, "items", item, "serials"), where("status", "==", "disponible"), orderBy("date_created", "desc"));
   const querySnapshot = await getDocs(q);
   
 
