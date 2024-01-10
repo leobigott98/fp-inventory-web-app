@@ -8,6 +8,8 @@ const History = () => {
   const router = useRouter()
   const { psid } = router.query
   const route = router.asPath
+  const category = route.split("/")[2].replace(/%20/g,' ')
+  const item = route.split("/")[3].replace(/%20/g,' ')
 
 /*   const validRoute = (route.split("/")[2]) =>{
 
@@ -20,8 +22,8 @@ const History = () => {
       </Head>    
      <BasicTable 
       serial = {psid}
-      product = {route.split("/")[3].replace(/%20/g,' ')}
-      category = {route.split("/")[2].replace(/%20/g,' ')}
+      category = {category}
+      itemId = {item}
       serialHistory
     /> 
     </Layout>

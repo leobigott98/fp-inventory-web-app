@@ -286,12 +286,12 @@ export default function BasicTable(props) {
                     </TableCell>
                     <TableCell key={row.serial} align="right">
                       <Stack direction="row">
-                        {/* <Button onClick={()=>{
+                        <Button onClick={()=>{
                           router.push(`/category/${props.category}/${props.itemId}/serial/${row.serial}`)
                         }
                         }>
                           <HistoryIcon />
-                        </Button> */}
+                        </Button>
                         <ManageItem category={props.category} item={props.itemId} serial={row.serial}/>
                       </Stack>
                     </TableCell>
@@ -317,7 +317,7 @@ export default function BasicTable(props) {
                       {row.location? row.location : '-'}
                     </TableCell>
                     <TableCell  align="right">
-                      {row.assignedTo? row.assignedTo : '-'}
+                      {row.assigned_to? row.assigned_to : '-'}
                     </TableCell>
                     <TableCell  align="right">
                       {row.status}
@@ -326,7 +326,7 @@ export default function BasicTable(props) {
                       {row.action}
                     </TableCell>
                     <TableCell  align="right">
-                      {row.user}
+                      {row.assigned_by_user}
                     </TableCell>
                     
                   </TableRow>
