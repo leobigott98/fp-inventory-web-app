@@ -261,12 +261,14 @@ export default function BasicTable(props) {
                           item={row.id}
                           category={props.cid}
                           product
+                          name = {row.data.name}
                         />
                         <AssignForm
                           reponer
                           item={row.id}
                           category={props.cid}
                           product
+                          name = {row.data.name}
                         />
                       </Stack>
 

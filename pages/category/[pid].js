@@ -25,10 +25,11 @@ const Product = () => {
       <title>{data? data.name : ''}</title>
       </Head>
     {/* <p>Product: {pid}</p> */}
-    {/* <AddForm 
-      name = {pid}
+    <AddForm 
+      category = {pid}
       item
-    /> */}
+      name = {data? data.name : ''}
+    />
     <BasicTable 
       cid = {pid}
       name = {data? data.name : ''}

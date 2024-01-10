@@ -133,7 +133,7 @@ export default function TransitionsModal(props) {
         <Fade in={open}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              {props.retirar? `Retiro de ${props.item}` : props.reponer? `Reposición de ${props.item}`: `Edición de ${props.item}`}
+              {props.retirar? `Retiro de ${props.name}` : props.reponer? `Reposición de ${props.name}`: `Edición de ${props.name}`}
             </Typography>
 
             <ThemeProvider theme={theme}>
@@ -203,7 +203,7 @@ export default function TransitionsModal(props) {
                         onChange={(event, newValue) => {
                           setValue(newValue);
                           }}
-                        options={data}
+                        options={locations}
                         getOptionLabel={(option) => {
                           // Value selected with enter, right from the input
                           if (typeof option === "string") {

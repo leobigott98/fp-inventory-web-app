@@ -59,7 +59,7 @@ export const newItem = async (event, category, checked, callback) => {
     serials: checked
   };
 
-  await addDoc(doc(db, "categories", category, "items"), data);
+  await addDoc(collection(db, "categories", category, "items"), data);
 
   callback()
 };

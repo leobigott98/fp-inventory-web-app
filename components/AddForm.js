@@ -62,14 +62,14 @@ export default function TransitionsModal(props) {
       window.location.reload(false);
     }
 
-    const [data, setData] = useState(['','']);
+    const [locations, setLocations] = useState(['','']);
 
-    /* useEffect(() => {
+    useEffect(() => {
       async function fetchData() {
-        setData(await getLocations());
+        setLocations(await getLocations());
       }
       fetchData();
-    }, []); */
+    }, []);
 
   const validation = (e)=>{
     
@@ -81,7 +81,7 @@ export default function TransitionsModal(props) {
 
      if(props.categories){
       newCategory(e, function () {refreshPage()})
-     } else newItem(e,props.name, checked, function () {refreshPage()})   
+     } else newItem(e,props.category, checked, function () {refreshPage()})   
     handleClose()
   }
 
@@ -191,7 +191,7 @@ export default function TransitionsModal(props) {
                         onChange={(event, newValue) => {
                           setValue(newValue);
                           }}
-                        options={data}
+                        options={locations}
                         getOptionLabel={(option) => {
                           // Value selected with enter, right from the input
                           if (typeof option === "string") {
