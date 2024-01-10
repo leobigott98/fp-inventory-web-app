@@ -284,17 +284,17 @@ export default function BasicTable(props) {
                     <TableCell key={row.serial} align="right">
                       {row.created_by_email}
                     </TableCell>
-                    {/* <TableCell key={row.serial} align="right">
+                    <TableCell key={row.serial} align="right">
                       <Stack direction="row">
-                        <Button onClick={()=>{
-                          router.push(`/category/${props.lastname}/${props.name}/serial/${row.serial}`)
+                        {/* <Button onClick={()=>{
+                          router.push(`/category/${props.category}/${props.itemId}/serial/${row.serial}`)
                         }
                         }>
                           <HistoryIcon />
-                        </Button>
-                        <ManageItem name={props.name} lastname={props.lastname} serial={row.serial}/>
+                        </Button> */}
+                        <ManageItem category={props.category} item={props.itemId} serial={row.serial}/>
                       </Stack>
-                    </TableCell> */}
+                    </TableCell>
                   </TableRow>
                 </>
               ) : props.serialHistory? (<>

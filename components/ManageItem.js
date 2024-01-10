@@ -35,7 +35,7 @@ export default function TransitionsModal(props) {
   const [serialInfo, setSerialInfo] = React.useState(null)
   const [action, setAction] = React.useState("");
   const [value, setValue] = React.useState(null);
-  const [data, setData] = React.useState(['','']);
+  const [locations, setLocations] = React.useState(['','']);
 
   const theme = createTheme();
 
@@ -45,17 +45,17 @@ export default function TransitionsModal(props) {
 
   React.useEffect(() => {
     async function fetchData() {
-      setData(await getLocations());
+      setLocations(await getLocations());
     }
     fetchData();
   }, []);
 
   React.useEffect(()=>{
     async function fetchData(){
-      setSerialInfo(await getSerialInfo(props.lastname, props.name, props.serial))
+      setSerialInfo(await getSerialInfo(props.category, props.item, props.serial))
     }
     fetchData();
-  },[props.lastname, props.name, props.serial])
+  },[props.category, props.item, props.serial])
 
     const disponibleOptions = ["Asignar", "Dañado"]
 
@@ -66,7 +66,7 @@ export default function TransitionsModal(props) {
     
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await assignSerial(e, props.name, props.lastname, props.serial, refreshPage)
+    await assignSerial(e, props.category, props.item, props.serial, refreshPage)
     
     handleClose();
   };
@@ -153,7 +153,7 @@ export default function TransitionsModal(props) {
                         onChange={(event, newValue) => {
                           setValue(newValue);
                           }}
-                        options={data}
+                        options={locations}
                         getOptionLabel={(option) => {
                           // Value selected with enter, right from the input
                           if (typeof option === "string") {

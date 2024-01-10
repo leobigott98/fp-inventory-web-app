@@ -88,7 +88,7 @@ export const newSerial = async (event, category, item, callback) => {
   callback()
 };
 
-/* export const assignSerial = async (event, category, item, serial, callback) => {
+export const assignSerial = async (event, category, item, serial, callback) => {
   event.preventDefault();
 
   const data = {
@@ -103,15 +103,15 @@ export const newSerial = async (event, category, item, callback) => {
 
   if(data.action == 'Asignar'){
     data.status = 'asignado'
-    data.assignedTo = event.target.assignedTo.value
+    data.assigned_to = event.target.assignedTo.value
   }else if(data.action == 'Desasignar'){
     data.status = 'disponible'
-    data.assignedTo = ''
+    data.assigned_to = ''
   }else data.status = 'averiado'
 
-  await addDoc(collection(db, "products", lastname, "items", name, "seriales", serial, "history"), data);
-  await updateDoc(doc(db, "products", lastname, "items", name, "seriales", serial), {
-    assignedTo: data.assignedTo,
+  await addDoc(collection(db, "categories", category, "items", item, "serials", serial, "history"), data);
+  await updateDoc(doc(db, "categories", category, "items", item, "serials", serial), {
+    assigned_to: data.assigned_to,
     status: data.status,
     location: data.location
   });
@@ -119,19 +119,19 @@ export const newSerial = async (event, category, item, callback) => {
   const Data = {
     type: "retiro",
     qty: -1,
-    person: data.assignedTo,
-    user: auth.currentUser.email,
+    givenTo_or_receivedFrom: data.assigned_to,
+    user_email: auth.currentUser.email,
     timestamp: serverTimestamp(),
     observations: '-'
   };
 
-  await addDoc(collection(db, "products", lastname, "items", name, "history"), Data);
-  await updateDoc(doc(db, "products", lastname, "items", name), {
-    Quantity: increment(Data.qty)
+  await addDoc(collection(db, "categories", category, "items", item, "history"), Data);
+  await updateDoc(doc(db, "categories", category, "items", item), {
+    number_of_elements: increment(Data.qty)
   });
 
   callback()
-}; */
+};
 
 export const getSerials = async (category, item) => {
   const q = query(collection(db, "categories", category, "items", item, "serials"), orderBy("date_created", "desc"));
