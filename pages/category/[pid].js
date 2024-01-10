@@ -6,15 +6,20 @@ import AddForm from '../../components/AddForm'
 import BasicTable from '../../components/BasicTable'
 import Head from "next/head";
 import { getCategory } from '../../src/service/DBService'
+import { getAuth } from 'firebase/auth'
+import { getUserData } from '../../src/service/DBService'
 
 const Product = () => {
   const [data, setData] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const auth = getAuth();
   const router = useRouter()
   const { pid } = router.query
 
   useEffect(()=>{
     async function fetchData(){
       setData(await getCategory(pid))
+      setUserData(await getUserData(auth.currentUser.uid));
     }
     fetchData();
   }, [])
@@ -24,16 +29,19 @@ const Product = () => {
     <Head>
       <title>{data? data.name : ''}</title>
       </Head>
-    {/* <p>Product: {pid}</p> */}
-    <AddForm 
+    {userData?
+      userData.role == "editor" ? 
+      <AddForm 
       category = {pid}
       item
       name = {data? data.name : ''}
-    />
+    /> : <></> : <></>
+    }
     <BasicTable 
       cid = {pid}
       name = {data? data.name : ''}
       item
+      role = {userData? userData.role : null}
     />
     
     </Layout>

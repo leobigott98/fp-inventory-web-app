@@ -46,7 +46,7 @@ export default function TransitionsModal(props) {
 
   return (
     <div>
-      <Button onClick={handleOpen}  disabled={!props.serials || props.disabled}><AddIcon/></Button>
+      <Button onClick={handleOpen}  disabled={!props.serials || props.disabled || !props.role}><AddIcon/></Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

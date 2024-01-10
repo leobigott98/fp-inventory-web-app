@@ -247,6 +247,7 @@ export default function BasicTable(props) {
                           category={props.cid}
                           item={row.id}
                           disabled = {row.data.number_of_elements == 0 ? true : false}
+                          role = {props.role == 'editor'? true : false}
                         />
                         <Button
                           onClick={() => {
@@ -292,7 +293,7 @@ export default function BasicTable(props) {
                         }>
                           <HistoryIcon />
                         </Button>
-                        <ManageItem category={props.category} item={props.itemId} serial={row.serial}/>
+                        <ManageItem category={props.category} item={props.itemId} serial={row.serial} role={props.role == "editor"? true:false}/>
                       </Stack>
                     </TableCell>
                   </TableRow>

@@ -60,6 +60,9 @@ export const newItem = async (event, category, checked, callback) => {
   };
 
   await addDoc(collection(db, "categories", category, "items"), data);
+  await updateDoc(doc(db, "categories", category), {
+    number_of_elements: increment(1)
+  });
 
   callback()
 };

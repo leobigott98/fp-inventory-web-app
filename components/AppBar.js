@@ -143,7 +143,7 @@ function ResponsiveAppBar() {
             }}
           >
             <Link href="/">
-              <Image src="/images/PuntoGo_efecto3D.png" width="180" height="40" alt="logo PuntoGo" priority/>
+              <Image src="/images/LogotipoFastPayment-03.png" width="180" height="40" alt="logo PuntoGo" priority/>
             </Link>
           </Box>
 
