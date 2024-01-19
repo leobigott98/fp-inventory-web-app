@@ -114,7 +114,7 @@ handlePasswordForgot = async(event, errorFunction, successFunction) =>{
   event.preventDefault();
   const auth = getAuth();
   var actionCodeSettings = {
-    url: 'http://localhost:3000/'
+    url: 'https://fp-inventory-web-app.vercel.app/'
   };
   sendPasswordResetEmail(auth, event.target.email.value, actionCodeSettings)
   .then(() => {
